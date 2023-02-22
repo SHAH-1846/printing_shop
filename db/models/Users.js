@@ -35,8 +35,15 @@ const users =  sequelize.define("users",{
         allowNull : false,
     },
 
+    forgot_password_token : {
+        type : Sequelize.STRING,
+    }
+
 }, {
     timestamps : false
 });
+
+
+ users.sync({ alter: true });
 
 module.exports = users

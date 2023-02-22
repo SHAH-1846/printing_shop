@@ -1,9 +1,9 @@
 const userModel = require("../db/models/Users");
 const userRoles = require("../db/models/user_role");
 const email_transporter = require("../utils/email_transporter").sendEmail;
-const reset_password_template =
-  require("../utils/email-templates/reset_password").resetPassword;
+const reset_password_template = require("../utils/email-templates/reset_password").resetPassword;
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 
 exports.createUser = async function (
   name,
@@ -76,3 +76,53 @@ exports.createUser = async function (
     }
   });
 };
+
+
+exports.forgotPassword = async function (email) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (email) {
+        let user = await userModel.findOne({where : {email : email}});
+        if (user) {
+          let reset_token = jwt.sign(
+            { user_id: user._id },
+            process.env.PRIVATE_KEY,
+            { expiresIn: "10m" }
+          );
+          let data = await userModel.findOrCreate({
+            where: { email: email },
+            defaults: {
+              forgot_password_token : reset_token       
+             }
+          });
+
+
+          
+          if (data.matchedCount === 1 && data.modifiedCount == 1) {
+            let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
+            let email_template = await restPassword(
+              user.first_name,
+              reset_link
+            );
+            sendEmail(email, "Помоград - сброс пароля", email_template);
+            resolve({ status: 200, message: "Email sent successfully" });
+          } else if (data.matchedCount === 0)
+            reject({ status: 404, message: "User not found" });
+          else reject({ status: 400, message: "Password reset failed" });
+        } else {
+          reject({ status: 403, message: "Forbidden" });
+        }
+      } else reject({ status: 422, message: "Email is required" });
+    } catch (error) {
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+    }
+  });
+};
+

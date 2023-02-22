@@ -20,3 +20,18 @@ exports.createUser = function(req, res)
         res.status(error.status).send(response);
     });
 }
+
+
+exports.forgotPasswordController = function(req, res)
+    {
+        let email = req.body.email;
+    
+        userManager.forgotPassword(email)
+        .then((result)=>{
+            let response = success_function(result)
+            res.status(result.status).send(response);
+        }).catch((error)=>{
+            let response = error_function(error)
+            res.status(error.status).send(response);
+        });
+    }
