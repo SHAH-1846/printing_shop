@@ -37,13 +37,14 @@ const users =  sequelize.define("users",{
 
     forgot_password_token : {
         type : Sequelize.STRING,
+        allowNull : false,
     }
 
 }, {
     timestamps : false
 });
 
-
+//do not use this in production
  users.sync({ alter: true });
 
 module.exports = users

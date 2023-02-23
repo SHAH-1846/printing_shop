@@ -15,7 +15,8 @@ const setAccessControl = (access_type) => {
 };
 
 router.post('/createuser',setAccessControl('1'), userController.createUser);
-router.post('/logout', userController.forgotPasswordController);
+router.post('/forgot-password', userController.forgotPasswordController);
+router.post('/reset-password', userController.resetPasswordController);
 
 
 

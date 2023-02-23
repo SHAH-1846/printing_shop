@@ -1,9 +1,11 @@
 const userModel = require("../db/models/Users");
 const userRoles = require("../db/models/user_role");
 const email_transporter = require("../utils/email_transporter").sendEmail;
-const reset_password_template = require("../utils/email-templates/reset_password").resetPassword;
+const set_password_template = require("../utils/email-templates/set_password").resetPassword;
+const forgot_password_template = require('../utils/email-templates/forgot-password').forgotPassword;
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const { Op } = require("sequelize");
 
 exports.createUser = async function (
   name,
@@ -44,13 +46,13 @@ exports.createUser = async function (
             });
 
             //Sending email and password
-            let email_template = await reset_password_template(
+            let email_template = await set_password_template(
               name,
               email,
               password
             );
             // console.log(email_template);
-            await email_transporter(email, "Reset Password", email_template);
+            await email_transporter(email, "Update Password", email_template);
             resolve({
               status: 200,
               message: "Login details send to the email address",
@@ -85,30 +87,32 @@ exports.forgotPassword = async function (email) {
         let user = await userModel.findOne({where : {email : email}});
         if (user) {
           let reset_token = jwt.sign(
-            { user_id: user._id },
+            { user_id: user.id },
             process.env.PRIVATE_KEY,
             { expiresIn: "10m" }
           );
-          let data = await userModel.findOrCreate({
-            where: { email: email },
-            defaults: {
-              forgot_password_token : reset_token       
-             }
+
+          console.log("Reset Token : ", reset_token);
+
+          await user.set({
+            forgot_password_token : reset_token
           });
+
+          let data = await user.save();
+
+          // console.log("Data : ", data);
 
 
           
-          if (data.matchedCount === 1 && data.modifiedCount == 1) {
+          if (data) {
             let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
-            let email_template = await restPassword(
-              user.first_name,
+            let email_template = await forgot_password_template(
+              user.name,
               reset_link
             );
-            sendEmail(email, "Помоград - сброс пароля", email_template);
+            email_transporter(email, "Forgot Password", email_template);
             resolve({ status: 200, message: "Email sent successfully" });
-          } else if (data.matchedCount === 0)
-            reject({ status: 404, message: "User not found" });
-          else reject({ status: 400, message: "Password reset failed" });
+          }else reject({ status: 400, message: "Password reset failed" });
         } else {
           reject({ status: 403, message: "Forbidden" });
         }
@@ -126,3 +130,47 @@ exports.forgotPassword = async function (email) {
   });
 };
 
+//Reset Password
+exports.passwordReset = async function (token, password) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      decoded = jwt.decode(token);
+      console.log("User Id : ", decoded.user_id);
+      const user_id = decoded.user_id;
+      console.log("Decoded : ", decoded);
+      let user = await userModel.findOne({
+        where: {
+          [Op.and]: [{ id: decoded.user_id }, { forgot_password_token : token}],
+        },
+      });
+
+      console.log("User : ", user);
+
+      if (user) {
+        let salt = bcrypt.genSaltSync(10);
+        let password_hash = bcrypt.hashSync(password, salt);
+        let data = await userModel.update(
+          { password : password_hash },
+          {
+            where: {
+              id : decoded.user_id,
+            },
+          }
+        );
+        if (data){ 
+          resolve({ status: 200, message: "Password changed successfully" });
+        }else reject({ status: 400, message: "Password reset failed" });
+
+      } else reject({ status: 403, message: "Forbidden" });
+    } catch (error) {
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+    }
+  });
+};

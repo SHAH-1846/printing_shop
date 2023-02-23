@@ -35,3 +35,21 @@ exports.forgotPasswordController = function(req, res)
             res.status(error.status).send(response);
         });
     }
+
+
+    exports.resetPasswordController = function(req, res)
+{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(' ')[1];
+
+    let password = req.body.password;
+
+    userManager.passwordReset(token, password)
+    .then((result)=>{
+        let response = success_function(result);
+        res.status(result.status).send(response);
+    }).catch((error)=>{
+        let response = error_function(error)
+        res.status(error.status).send(response);
+    });
+}
