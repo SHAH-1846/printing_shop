@@ -1,5 +1,7 @@
 const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
+// const user_roles_connection = require('./user_roles_connection');
+// const user_roles = require('./user_roles');
 
 
 const users =  sequelize.define("users",{
@@ -10,12 +12,22 @@ const users =  sequelize.define("users",{
         primaryKey: true
     },
 
-    name : {
+    first_name : {
+        type: Sequelize.STRING,
+        allowNull : false,
+    },
+
+    last_name : {
         type: Sequelize.STRING,
         allowNull : false,
     },
 
     email : {
+        type: Sequelize.STRING,
+        allowNull : false,
+    },
+    
+    image : {
         type: Sequelize.STRING,
         allowNull : false,
     },
@@ -25,26 +37,36 @@ const users =  sequelize.define("users",{
         allowNull : false,
     },
 
-    type : {
-        type: Sequelize.STRING,
+    department_id : {
+        //id from department table
+        type : Sequelize.INTEGER,
         allowNull : false,
     },
+
+    section_id : {
+        //id from section table
+        type : Sequelize.INTEGER,
+        allowNull : false,
+    },
+
+    // branch_id : {
+    //     type : Sequelize.STRING,
+    //     allowNull : false,
+    // },
 
     password : {
         type: Sequelize.STRING,
         allowNull : false,
     },
 
-    forgot_password_token : {
+    reset_password_token : {
         type : Sequelize.STRING,
         allowNull : false,
     }
 
-}, {
-    timestamps : false
 });
 
 //do not use this in production
- users.sync({ alter: true });
+//  users.sync({ alter: true });
 
 module.exports = users

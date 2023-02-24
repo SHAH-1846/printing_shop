@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const authController = require('../controllers/authController');
 const error_function = require('./response-handler').error_function;
 const control_data = require('./control-data.json');
-const userModel = require('../db/models/Users');
+const userModel = require('../db/models/users');
 const checkRevoked = require('../managers/logoutManager').checkRevoked;
 
 

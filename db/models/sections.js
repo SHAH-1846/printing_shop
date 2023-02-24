@@ -1,19 +1,24 @@
-const { Sequelize } = require('sequelize');
+const {Sequelize} = require('sequelize');
+
 const sequelize = require('../db-conn');
 
-const userRoles=  sequelize.define("user_role",{
-    id:{
+
+const sections =  sequelize.define("sections",{
+
+id:{
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-
-    role:{
+section_name : {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull : false,
     },
+
 
 });
 
-module.exports = userRoles
+//  department.sync({ alter: true });
+
+module.exports = sections

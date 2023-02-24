@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 const Cryptr = require('cryptr');
-const userModel = require('../db/models/Users');
+const userModel = require('../db/models/users');
 
 exports.login = async function (email, password) {
     return new Promise(async (resolve, reject) => {

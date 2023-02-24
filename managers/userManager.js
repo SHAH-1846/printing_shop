@@ -1,5 +1,5 @@
-const userModel = require("../db/models/Users");
-const userRoles = require("../db/models/user_role");
+const userModel = require("../db/models/users");
+const userRoles = require("../db/models/user_roles");
 const email_transporter = require("../utils/email_transporter").sendEmail;
 const set_password_template = require("../utils/email-templates/set_password").resetPassword;
 const forgot_password_template = require('../utils/email-templates/forgot-password').forgotPassword;
@@ -140,7 +140,7 @@ exports.passwordReset = async function (token, password) {
       console.log("Decoded : ", decoded);
       let user = await userModel.findOne({
         where: {
-          [Op.and]: [{ id: decoded.user_id }, { forgot_password_token : token}],
+          [Op.and]: [{ id: decoded.user_id }, { reset_password_token : token}],
         },
       });
 

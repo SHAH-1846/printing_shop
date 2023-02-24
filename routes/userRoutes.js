@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+// const department = require('../db/models/department');
+const section = require('../db/models/sections');
 const accessControl = require('../utils/access-control').accessControl;
 
 //only admin can
@@ -15,6 +17,7 @@ const setAccessControl = (access_type) => {
 };
 
 router.post('/createuser',setAccessControl('1'), userController.createUser);
+//Create api to reset password after login of users
 router.post('/forgot-password', userController.forgotPasswordController);
 router.post('/reset-password', userController.resetPasswordController);
 
