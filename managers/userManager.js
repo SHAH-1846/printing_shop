@@ -1,5 +1,6 @@
 const userModel = require("../db/models/users");
 const userRoles = require("../db/models/user_roles");
+const userRoleConnector = require('../db/models/user_roles_connection');
 const email_transporter = require("../utils/email_transporter").sendEmail;
 const set_password_template = require("../utils/email-templates/set_password").resetPassword;
 const forgot_password_template = require('../utils/email-templates/forgot-password').forgotPassword;
@@ -21,6 +22,9 @@ exports.createUser = async function (
       //checking if user exist
         if (name && email && phone && role && password) {
           let user = await userModel.findOne({ where: { email: email } });
+          // decoded = jwt.decode(token);
+          // const user_id = decoded.user_id;
+          // user_role_id = userRoleConnector.findAll({ where: { user_id: user_id } });
 
           if (user) {
             //user exist

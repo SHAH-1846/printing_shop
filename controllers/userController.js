@@ -11,7 +11,12 @@ exports.createUser = function(req, res)
     let role = req.body.role;
     let password = req.body.password;
 
-    userManager.createUser(name, email, phone, role, password)
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(' ')[1];
+
+
+
+    userManager.createUser(name, email, phone,role, password)
     .then((result)=>{
         let response = success_function(result);
         res.status(result.status).send(response);

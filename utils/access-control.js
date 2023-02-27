@@ -4,6 +4,10 @@ const error_function = require('./response-handler').error_function;
 const control_data = require('./control-data.json');
 const userModel = require('../db/models/users');
 const checkRevoked = require('../managers/logoutManager').checkRevoked;
+const userRoleConnector = require('../db/models/user_roles_connection');
+const user_roles_connection = require('../db/models/user_roles_connection');
+const { QueryTypes } = require('sequelize');
+const userRoles = require('../db/models/user_roles');
 
 
 
@@ -32,8 +36,22 @@ exports.accessControl = async function (access_types, req, res, next) {
                         let allowed = (access_types.split(',')).map(obj => control_data[obj]); 
                         // console.log("allowed : (from access control) : ", allowed);
                         let user = await userModel.findOne({where : {id : decoded.user_id}});
+                        //Let's find number of user id in user connector table
+                        console.log("User_id : ", decoded.user_id);
+                        let role_id = await userRoleConnector.findAll({attributes: ['role_id'], where: { user_id: decoded.user_id } });
+                        // console.log("user_ids : ", user_ids);
+                        //Let's find corresponding roles for the user
+                        console.log("Role Ids : ", role_id);
                         // console.log("user : (from access control) : ", user);
-                        let user_role = user.type;
+                        // let user_role = user.type;
+                        let user_role = await userRoles.findOne({attributes : ['role'], where : {id : role_id}});
+                        console.log("User Role : ", user_role);
+
+
+
+
+
+                        
                         // console.log("user_role : (from access control) : ", user_role);
                         if (allowed && allowed.includes(user_role)) {
                             //checking if the token is in revoked list

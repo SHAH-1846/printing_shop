@@ -49,24 +49,19 @@ const users =  sequelize.define("users",{
         allowNull : false,
     },
 
-    // branch_id : {
-    //     type : Sequelize.STRING,
-    //     allowNull : false,
-    // },
+    branch_id : {
+        type : Sequelize.STRING,
+        allowNull : false,
+    },
 
     password : {
         type: Sequelize.STRING,
         allowNull : false,
     },
 
-    reset_password_token : {
-        type : Sequelize.STRING,
-        allowNull : false,
-    }
-
 });
 
 //do not use this in production
-//  users.sync({ alter: true });
+ users.sync({ alter: true });
 
 module.exports = users
