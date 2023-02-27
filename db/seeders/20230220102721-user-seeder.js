@@ -18,8 +18,10 @@ module.exports = {
       [
         {
           id : 1,
-          name : 'James S. Waters',
+          first_name : 'James',
+          last_name : 'Waters',
           email : 'james@gmail.com',
+          image : "No Image",
           phone : '225-572-2376',
           type : 'Admin', 
           password : '$2a$10$vKssVNL27gR1kGLHi56L7.zz0oYic4AoNfmFofsugpdzBjgS7OlIK' //Admin#123

@@ -3,7 +3,7 @@ const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const department =  sequelize.define("department",{
+const services =  sequelize.define("services",{
 
 id:{
         type: Sequelize.INTEGER,
@@ -11,14 +11,20 @@ id:{
         allowNull: false,
         primaryKey: true
     },
-department_name : {
+    
+    service_name : {
         type: Sequelize.STRING,
         allowNull : false,
     },
+
+    service_cost : {
+        type : Sequelize.STRING,
+        allowNull : false,
+    }
 
 
 });
 
 //  department.sync({ force: true });
 
-module.exports = department
+module.exports = services
