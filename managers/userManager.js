@@ -12,7 +12,9 @@ const sectionModel = require('../db/models/sections');
 const branchModel = require('../db/models/branches');
 
 
+
 exports.createUser = async function (
+  //Create another login for first time login
   first_name,
   last_name,
   email,
