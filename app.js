@@ -20,7 +20,7 @@ const authRoutes = require('./routes/authRoutes');
 
 const userRoutes = require('./routes/userRoutes');
 
-const model = require('./db/models/reset_password_tokens');
+// const model = require('./db/models/branches');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));

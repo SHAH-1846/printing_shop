@@ -11,7 +11,7 @@ id:{
         allowNull: false,
         primaryKey: true
     },
-branch_name : {
+branch : {
         type: Sequelize.STRING,
         allowNull : false,
     },

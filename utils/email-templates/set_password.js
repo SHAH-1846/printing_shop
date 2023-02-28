@@ -133,7 +133,7 @@ exports.resetPassword = function (name, email, password) {
                                     <!--add any text here-->
                                 Your password :
                               </span>
-                              <b class="text-warning">${password}</b>
+                              <b class="text-warning">${password} (This password can only be used once)</b>
                               <br><br>
                               <span class="text-dark">
                              Please do not show or forward it to third parties.

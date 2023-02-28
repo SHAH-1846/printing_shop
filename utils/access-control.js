@@ -35,24 +35,20 @@ exports.accessControl = async function (access_types, req, res, next) {
                         //checking access control
                         let allowed = (access_types.split(',')).map(obj => control_data[obj]); 
                         // console.log("allowed : (from access control) : ", allowed);
+
+                        //Finda a user from user_id decoded from token in the users table
                         let user = await userModel.findOne({where : {id : decoded.user_id}});
-                        //Let's find number of user id in user connector table
-                        console.log("User_id : ", decoded.user_id);
-                        let role_id = await userRoleConnector.findAll({attributes: ['role_id'], where: { user_id: decoded.user_id } });
-                        // console.log("user_ids : ", user_ids);
-                        //Let's find corresponding roles for the user
+
+                        //Finds role_id from user_role_connection table using user_id
+                        let role_id_column = await userRoleConnector.findAll({plain: true,raw : true, attributes: ['role_id'], where: { user_id: decoded.user_id } });
+                        const role_id = role_id_column.role_id;
                         console.log("Role Ids : ", role_id);
-                        // console.log("user : (from access control) : ", user);
-                        // let user_role = user.type;
-                        let user_role = await userRoles.findOne({attributes : ['role'], where : {id : role_id}});
+
+                        //Finds user_role from user_roles table using the role_id
+                        let user_role_column = await userRoles.findOne({raw : true, plain : true ,attributes : ['role'],where : {id : role_id}});
+                        let user_role = user_role_column.role;
                         console.log("User Role : ", user_role);
-
-
-
-
-
                         
-                        // console.log("user_role : (from access control) : ", user_role);
                         if (allowed && allowed.includes(user_role)) {
                             //checking if the token is in revoked list
                             let revoked = await checkRevoked(token);

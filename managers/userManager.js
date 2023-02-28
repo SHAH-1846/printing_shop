@@ -7,20 +7,28 @@ const forgot_password_template = require('../utils/email-templates/forgot-passwo
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 const { Op } = require("sequelize");
+const departmentModel = require('../db/models/departments');
+const sectionModel = require('../db/models/sections');
+const branchModel = require('../db/models/branches');
+
 
 exports.createUser = async function (
-  name,
+  first_name,
+  last_name,
   email,
+  image,
   phone,
   role,
-  password
+  department,
+  section,
+  branch
   ) {
   return new Promise(async (resolve, reject) => {
     try {
       //checking if requested user is admin or not
 
       //checking if user exist
-        if (name && email && phone && role && password) {
+        if (first_name && last_name && image && department && section && branch && email && phone && role) {
           let user = await userModel.findOne({ where: { email: email } });
           // decoded = jwt.decode(token);
           // const user_id = decoded.user_id;
@@ -33,15 +41,39 @@ exports.createUser = async function (
             let salt = bcrypt.genSaltSync(10);
 
             // let code = Math.floor(1000 + Math.random() * 9000);
+            let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let otp = "";
+           for (let i = 0; i <= 7; i++) {
+              var randomNumber = Math.floor(Math.random() * chars.length);
+              otp += chars.substring(randomNumber, randomNumber +1);
+             }
 
-            let password_hash = bcrypt.hashSync(password, salt);
+             let password = bcrypt.hashSync(otp,salt);
+
+            let department_value = await departmentModel.findOne({attributes : ['id'], raw : true, where : {department : department}});
+            let department_id = department_value.id;
+            console.log('Department Id : ', department_id);
+            let section_value = await sectionModel.findOne({attributes : ['id'], raw : true,where : {section : section}});
+            let section_id = section_value.id;
+            console.log('Section Id : ', section_id);
+            let branch_value = await branchModel.findOne({attributes : ['id'], raw : true, where : {branch : branch}});
+            let branch_id = branch_value.id;
+            console.log('Branch Id : ', branch_id);
+
+
 
             let new_user = {
-              name: name,
+              first_name: first_name,
+              last_name : last_name,
+              image : image,
               email: email,
               phone: phone,
-              password: password_hash,
-              type: role,
+              department_id : department_id,
+              section_id : section_id,
+              branch_id : branch_id,
+              password: password,
+              otp : otp,
+              otp_status : "active"
             };
 
             await userModel.findOrCreate({
@@ -51,9 +83,9 @@ exports.createUser = async function (
 
             //Sending email and password
             let email_template = await set_password_template(
-              name,
+              first_name,
               email,
-              password
+              otp
             );
             // console.log(email_template);
             await email_transporter(email, "Update Password", email_template);
@@ -63,7 +95,8 @@ exports.createUser = async function (
             });
           }
         } else {
-          if (!name) reject({ status: 422, message: "Name is required" });
+          if (!first_name) reject({ status: 422, message: "First Name is required" });
+          if (!last_name) reject({ status: 422, message: "Last Name is required" });
           if (!phone) reject({ status: 422, message: "Phone is required" });
           if (!role) reject({ status: 422, message: "Role is required" });
           if (!email) reject({ status: 422, message: "Email is required" });

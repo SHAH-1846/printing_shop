@@ -58,6 +58,15 @@ const users =  sequelize.define("users",{
         type: Sequelize.STRING,
         allowNull : false,
     },
+    otp : {
+        type : Sequelize.STRING,
+        allowNull : false,
+    },
+
+    otp_status : {
+        type : Sequelize.STRING,
+        allowNull : false
+    }
 
 });
 

@@ -11,14 +11,15 @@ id:{
         allowNull: false,
         primaryKey: true
     },
-section_name : {
+
+    section : {
         type: Sequelize.STRING,
         allowNull : false,
-    },
+        },
 
 
 });
 
-//  department.sync({ alter: true });
+//  sections.sync({ alter: true });
 
 module.exports = sections

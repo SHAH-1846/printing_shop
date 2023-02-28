@@ -14,23 +14,23 @@ module.exports = {
     */
 
     await queryInterface.bulkInsert(
-      "departments",
+      "sections",
       [
         {
           id: 1,
-          department: "Department-1",
+          section: "Section-1",
           createdAt : "2018-10-2",
           updatedAt : "2018-10-2"
         },
         {
           id: 2,
-          department: "Department-2",
+          section: "Section-2",
           createdAt : "2018-10-2",
           updatedAt : "2018-10-2"
         },
         {
           id: 3,
-          department: "Department-3",
+          section: "Section-3",
           createdAt : "2018-10-2",
           updatedAt : "2018-10-2"
         },

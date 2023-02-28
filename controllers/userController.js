@@ -5,18 +5,22 @@ const error_function = require('../utils/response-handler').error_function;
 
 exports.createUser = function(req, res)
 {
-    let name = req.body.name;
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
     let email = req.body.email;
+    let image = req.body.image;
     let phone = req.body.phone;
     let role = req.body.role;
-    let password = req.body.password;
-
+    let department = req.body.department;
+    let section = req.body.section;
+    let branch = req.body.branch;
+    
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
 
 
 
-    userManager.createUser(name, email, phone,role, password)
+    userManager.createUser(first_name, last_name, email, image, phone, role,department, section, branch)
     .then((result)=>{
         let response = success_function(result);
         res.status(result.status).send(response);
