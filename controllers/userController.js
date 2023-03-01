@@ -14,6 +14,7 @@ exports.createUser = function(req, res)
     let department = req.body.department;
     let section = req.body.section;
     let branch = req.body.branch;
+    let new_user = req.body.new_user;
     
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
@@ -51,14 +52,31 @@ exports.forgotPasswordController = function(req, res)
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
 
-    let password = req.body.password;
+    let old_password = req.body.old_password;
+    let new_password = req.body.new_password
 
-    userManager.passwordReset(token, password)
+    userManager.passwordReset(token, old_password, new_password)
     .then((result)=>{
         let response = success_function(result);
         res.status(result.status).send(response);
     }).catch((error)=>{
         let response = error_function(error)
+        res.status(error.status).send(response);
+    });
+}
+
+
+exports.resetForgettedPassword = function(req, res)
+{
+    let token = req.body.token;
+    let new_password = req.body.new_password;
+
+    userManager.resetForgettedPassword(token, new_password)
+    .then((result)=>{
+        let response = success_function(result);
+        res.status(result.status).send(response);
+    }).catch((error)=>{
+        let response = error_function(error);
         res.status(error.status).send(response);
     });
 }

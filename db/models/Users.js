@@ -66,6 +66,11 @@ const users =  sequelize.define("users",{
     otp_status : {
         type : Sequelize.STRING,
         allowNull : false
+    },
+    
+    new_user : {
+        type : Sequelize.STRING,
+        allowNull : false,
     }
 
 });

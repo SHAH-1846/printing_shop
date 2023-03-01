@@ -6,6 +6,21 @@ const error_function = require('../utils/response-handler').error_function;
 const checkRevoked = require('../managers/logoutManager').checkRevoked;
 
 
+exports.firstTimeLogin = function(req,res){
+    let email = req.body.email;
+    let otp = req.body.otp; //one time password
+
+    loginManager.firstTimeLogin(email, otp)
+    .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+    }).catch((error)=> {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+    })
+}
+
+
 exports.login = function(req, res)
 {
     let email = req.body.email;

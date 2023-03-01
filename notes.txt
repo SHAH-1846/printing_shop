@@ -1,0 +1,5 @@
+Admin creates new user
+new user can login using otp(a random generated password) or using forgot password api
+after login new user has to reset password and then can user usual login page and cannot use the otp for login again
+
+ToDo : after recieving new password through forgot password api the new_user flag should be set to false

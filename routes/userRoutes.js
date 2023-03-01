@@ -19,7 +19,8 @@ const setAccessControl = (access_type) => {
 router.post('/createuser',setAccessControl('1'), userController.createUser);
 //Create api to reset password after login of users
 router.post('/forgot-password', userController.forgotPasswordController);
-router.post('/reset-password', userController.resetPasswordController);
+router.post('/reset_forgetted_password', userController.resetForgettedPassword);//for any users who can't login
+router.post('/reset-password', userController.resetPasswordController);//for logged in users for just only change the password
 
 
 
