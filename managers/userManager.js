@@ -12,6 +12,8 @@ const { Op } = require("sequelize");
 const departmentModel = require("../db/models/departments");
 const sectionModel = require("../db/models/sections");
 const branchModel = require("../db/models/branches");
+const fileUpload = require('../utils/file_upload').fileUpload;
+// const branches = require("../db/models/branches");
 
 exports.createUser = async function (
   //Create another login for first time login
@@ -33,7 +35,6 @@ exports.createUser = async function (
       if (
         first_name &&
         last_name &&
-        image &&
         department &&
         section &&
         branch &&
@@ -91,6 +92,8 @@ exports.createUser = async function (
           let branch_id = branch_value.id;
           console.log("Branch Id : ", branch_id);
 
+
+
           //Initializing user datas
           let new_user = {
             first_name: first_name,
@@ -106,6 +109,20 @@ exports.createUser = async function (
             otp_status: "active",
             new_user: "true",
           };
+
+          //Checking for image
+          if(image) {
+            image = await fileUpload(image, "users");
+
+            if(image){
+
+              new_user["image"] = image;
+            }else {
+              console.log("Unable to save image");
+            }
+          } else {
+            new_user["image"] = null;
+          }
 
           //saving
           await userModel.findOrCreate({
@@ -125,6 +142,7 @@ exports.createUser = async function (
             status: 200,
             message: "Login details send to the email address",
           });
+
         }
       } else {
         if (!first_name)
@@ -317,3 +335,230 @@ exports.resetForgettedPassword = async function (token, new_password) {
     }
   });
 };
+
+exports.fetchAllProfiles = async function (token, page, limit) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+    
+        let users = await userModel.findAll({
+          attributes: ['first_name', 'last_name', 'email', 'image', 'phone', 'createdAt','updatedAt'] //incomplete need to implement a way to fetch department, section, and branch details from corresponding columns
+        });
+      
+        console.log("All fetched Users : ", users);
+        resolve({"status" : 200, "data" : users, "message" : "All users details fetched successfully"});
+    
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+
+
+exports.fetchSingleProfile = async function (token) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+
+        let branchName = (await branchModel.findOne({where : {id : user.branch_id}})).getDataValue('branch');
+        let sectionName = (await sectionModel.findOne({where : {id : user.section_id}})).getDataValue('section');
+        let departmentName = (await departmentModel.findOne({where : {id : user.department_id}})).getDataValue('department');
+
+        let profile = {
+          firstName : user.first_name,
+          lastName : user.last_name,
+          email : user.email,
+          image : user.image,
+          phone : user.phone,
+          department : departmentName,
+          section : sectionName,
+          branch : branchName,
+        }
+  
+      
+        console.log("Profile data : ", profile);
+        resolve({"status" : 200, "data" : profile, "message" : "User details fetched successfully"});
+    
+      }else {
+
+        reject({"status" : 404, "message" : "No profile found"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+
+
+
+exports.fetchAllDepartments = async function (token) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+    
+        let departments = await departmentModel.findAll({attributes : ['department']});
+      
+        console.log("All fetched Users : ", departments);
+        resolve({"status" : 200, "data" : departments, "message" : "Departments fetched successfully"});
+    
+      }else {
+        reject({"status" : 401, "message" : "Not allowed to access the route"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+
+
+exports.fetchAllSections = async function (token) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+    
+        let sections = await sectionModel.findAll({attributes : ['section']});
+      
+        console.log("All fetched Users : ", sections);
+        resolve({"status" : 200, "data" : sections, "message" : "Sections fetched successfully"});
+    
+      }else {
+        reject({"status" : 401, "message" : "Not allowed to access the route"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+
+
+
+exports.fetchAllBranches = async function (token) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+    
+        let branches = await branchModel.findAll({attributes : ['branch']});
+      
+        console.log("All fetched Users : ", branches);
+        resolve({"status" : 200, "data" : branches, "message" : "Branches fetched successfully"});
+    
+      }else {
+        reject({"status" : 401, "message" : "Not allowed to access the route"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+

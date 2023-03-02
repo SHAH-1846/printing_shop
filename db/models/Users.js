@@ -28,8 +28,9 @@ const users =  sequelize.define("users",{
     },
     
     image : {
+        //id from images table
         type: Sequelize.STRING,
-        allowNull : false,
+    
     },
 
     phone : {

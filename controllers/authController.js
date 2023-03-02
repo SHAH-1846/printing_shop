@@ -41,6 +41,7 @@ exports.logout = async function(req, res)
 {
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
+    console.log("Logout called");
 
     // if (
     //     token == null ||
@@ -53,6 +54,8 @@ exports.logout = async function(req, res)
     //   }
 
     if(token){
+
+                console.log("Logout called");
     
               let isRevoked =  await checkRevoked(token);
               console.log("isRevoked : ", isRevoked);

@@ -80,3 +80,106 @@ exports.resetForgettedPassword = function(req, res)
         res.status(error.status).send(response);
     });
 }
+
+
+exports.fetchAllProfiles = function (req,res){
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+
+    let page = req.query.page;
+
+    let limit = req.query.limit;
+
+    userManager
+      .fetchAllProfiles(token, page, limit)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+}
+
+
+exports.fetchSingleProfile = function (req,res){
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+
+    userManager
+      .fetchSingleProfile(token)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+}
+
+exports.fetchAllDepartments = function (req,res){
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+
+    userManager
+      .fetchAllDepartments(token)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+}
+
+
+exports.fetchAllSections = function (req,res){
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+
+    userManager
+      .fetchAllSections(token)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+}
+
+
+exports.fetchAllBranches = function (req,res){
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+
+    userManager
+      .fetchAllBranches(token)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+}

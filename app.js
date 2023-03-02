@@ -20,7 +20,7 @@ const authRoutes = require('./routes/authRoutes');
 
 const userRoutes = require('./routes/userRoutes');
 
-// const model = require('./db/models/branches');
+const model = require('./db/models/files');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
