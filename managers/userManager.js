@@ -13,6 +13,7 @@ const departmentModel = require("../db/models/departments");
 const sectionModel = require("../db/models/sections");
 const branchModel = require("../db/models/branches");
 const fileUpload = require('../utils/file_upload').fileUpload;
+const validateCreateUser = require('../validation/create_user');
 // const branches = require("../db/models/branches");
 
 exports.createUser = async function (
@@ -42,6 +43,28 @@ exports.createUser = async function (
         phone &&
         role
       ) {
+
+
+        // Validations
+        // data ={
+        //   first_name : first_name,
+        //   last_name : last_name,
+        //   email : email,
+        //   phone : phone,
+        //   role : role,
+        //   department : department,
+        //   section : section,
+        //   branch : branch
+        // }
+
+        // const Validations = await validateCreateUser(data);
+
+        // if (!isValid) {
+        //   reject({"status" : 400, "data" : errors, "message" : "Validations failed"});
+        // }
+
+
+
         let user = await userModel.findOne({ where: { email: email } });
         // decoded = jwt.decode(token);
         // const user_id = decoded.user_id;
