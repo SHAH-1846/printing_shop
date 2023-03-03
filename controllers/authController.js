@@ -4,36 +4,61 @@ const logoutManager = require('../managers/logoutManager');
 const success_function = require('../utils/response-handler').success_function;
 const error_function = require('../utils/response-handler').error_function;
 const checkRevoked = require('../managers/logoutManager').checkRevoked;
+const validateFirstTimeLoginInput = require('../validation/first_time_login');
+const validateLoginInput = require('../validation/login');
 
 
 exports.firstTimeLogin = function(req,res){
-    let email = req.body.email;
-    let otp = req.body.otp; //one time password
 
-    loginManager.firstTimeLogin(email, otp)
-    .then((result) => {
-        let response = success_function(result);
-        res.status(result.status).send(response);
-    }).catch((error)=> {
-        let response = error_function(error);
-        res.status(error.status).send(response);
-    })
+    //Login after admin creates a new user, sends an otp to the user through email and the user has to enter the otp and his registered email(which is entered by admin) through first time login page, users can also use forgot password api to reset their password if registered by admin
+
+
+    let {errors, isValid}=validateFirstTimeLoginInput(req.body);
+
+
+    if(isValid){
+
+        let email = req.body.email;
+        let otp = req.body.otp; //one time password
+    
+        loginManager.firstTimeLogin(email, otp)
+        .then((result) => {
+            let response = success_function(result);
+            res.status(result.status).send(response);
+        }).catch((error)=> {
+            let response = error_function(error);
+            res.status(error.status).send(response);
+        })
+    }else{
+        res.status(400).send({"status" : 400, "error" : errors, "message" : "Validation Failed"});
+    }
+
 }
 
 
 exports.login = function(req, res)
 {
-    let email = req.body.email;
-    let password = req.body.password;
+    //login for users, this cannot be used by users who hasn't completed first time login or resetted their password
 
-    loginManager.login(email, password)
-    .then((result)=>{
-        let response = success_function(result);
-        res.status(result.status).send(response);
-    }).catch((error)=>{
-        let response = error_function(error);
-        res.status(error.status).send(response);
-    });
+    const {errors, isValid} = validateLoginInput(req.body);
+
+    if(isValid){
+
+
+        let email = req.body.email;
+        let password = req.body.password;
+    
+        loginManager.login(email, password)
+        .then((result)=>{
+            let response = success_function(result);
+            res.status(result.status).send(response);
+        }).catch((error)=>{
+            let response = error_function(error);
+            res.status(error.status).send(response);
+        });
+    }else{
+        res.status(400).send({"status" : 400, "errors" : errors, "message" : "Validation failed"});
+    }
 }
 
 

@@ -215,7 +215,7 @@ exports.forgotPassword = async function (email) {
           if (data) {
             let reset_link = `${process.env.FRONTEND_URL}/reset-password?token=${reset_token}`;
             let email_template = await forgot_password_template(
-              user.name,
+              user.first_name,
               reset_link
             );
             email_transporter(email, "Forgot Password", email_template);

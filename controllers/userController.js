@@ -2,6 +2,9 @@ const userManager = require('../managers/userManager');
 const success_function = require('../utils/response-handler').success_function;
 const error_function = require('../utils/response-handler').error_function;
 const validateCreateUser = require('../validation/create_user');
+const validateForgotPassword = require('../validation/forgot_password');
+const validateResetForgottedPassword = require('../validation/reset_forgetted_password');
+const validateResetPassword = require('../validation/reset_password');
 
 
 exports.createUser = function(req, res)
@@ -53,27 +56,43 @@ exports.createUser = function(req, res)
 
 exports.forgotPasswordController = function(req, res)
     {
+      
+      //Enter email and user recieves en email with a link to reset the forgotted password, the link also contains a jwt token which also must be passed to the backend through reset_forgotted_password controller
+
+      let {errors, isValid} = validateForgotPassword(req.body);
         let email = req.body.email;
     
-        userManager.forgotPassword(email)
-        .then((result)=>{
-            let response = success_function(result)
-            res.status(result.status).send(response);
-        }).catch((error)=>{
-            let response = error_function(error)
-            res.status(error.status).send(response);
-        });
+        if(isValid){
+
+          userManager.forgotPassword(email)
+          .then((result)=>{
+              let response = success_function(result)
+              res.status(result.status).send(response);
+          }).catch((error)=>{
+              let response = error_function(error)
+              res.status(error.status).send(response);
+          });
+
+        }else{
+          res.status(200).send({"status" : 200, "errors" : errors, "message" : "Validation failed"});
+        }
     }
 
 
     exports.resetPasswordController = function(req, res)
 {
+  //For login users just to reset the password
+
+  const {errors, isValid} = validateResetPassword(req.body);
+
+  if(isValid){
+
     const authHeader = req.headers['authorization'];
     const token = authHeader.split(' ')[1];
-
+  
     let old_password = req.body.old_password; //Random password or otp send through email if first user
     let new_password = req.body.new_password
-
+  
     userManager.passwordReset(token, old_password, new_password)
     .then((result)=>{
         let response = success_function(result);
@@ -82,11 +101,24 @@ exports.forgotPasswordController = function(req, res)
         let response = error_function(error)
         res.status(error.status).send(response);
     });
+
+  }else{
+
+    res.status(400).send({"status" : 400, "errors" : errors, "message" : "Validation Failed"});
+  }
+
 }
 
 
 exports.resetForgettedPassword = function(req, res)
 {
+
+  //Works after forgot_password controller, requires token and new password through the link send through email to the user
+
+  const {errors, isValid} = validateResetForgottedPassword(req.body);
+
+  if(isValid){
+
     let token = req.body.token;
     let new_password = req.body.new_password;
 
@@ -98,6 +130,10 @@ exports.resetForgettedPassword = function(req, res)
         let response = error_function(error);
         res.status(error.status).send(response);
     });
+
+  }else {
+    res.status(400).send({"status" : 400, "errors" : errors, "message" : "Validation failed"});
+  }
 }
 
 

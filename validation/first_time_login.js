@@ -1,3 +1,4 @@
+
 const validator = require("validator");
 const isEmpty = require("./is_empty");
 
@@ -5,17 +6,17 @@ module.exports = function validatefirstTimeLoginInput(data) {
   let errors = {};
 
   data.email = !isEmpty(data.email) ? data.email : "";
-  data.password = !isEmpty(data.password) ? data.password : "";
+  data.otp = !isEmpty(data.otp) ? data.otp : "";
 
   if (!validator.isEmail(data.email)) {
-    errors.email = "Email is invalid";
+    errors.email_invalid = "Email is invalid";
   }
 
   if (validator.isEmpty(data.email)) {
-    errors.email = "Email field is required";
+    errors.email_empty = "Email field is required";
   }
 
-  if (validator.isEmpty(data.password)) {
+  if (validator.isEmpty(data.otp)) {
     errors.password = "Password is required";
   }
 
@@ -24,3 +25,4 @@ module.exports = function validatefirstTimeLoginInput(data) {
     isValid: isEmpty(errors),
   };
 };
+

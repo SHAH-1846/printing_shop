@@ -8,11 +8,11 @@ module.exports = function validateLoginInput(data) {
 
 
   if (validator.isEmpty(data.new_password)) {
-    errors.new_password = "Password is required";
+    errors.password_empty = "Password is required";
   }
 
   if (!validator.isLength(data.new_password, { min: 6, max: 30 })) {
-    errors.new_password = "Password must be atleast 6 charactors";
+    errors.password_invalid = "Password must be atleast 6 charactors";
   }
 
   return {

@@ -72,6 +72,10 @@ const users =  sequelize.define("users",{
     new_user : {
         type : Sequelize.STRING,
         allowNull : false,
+    },
+
+    forgot_password_token : {
+        type : Sequelize.STRING
     }
 
 });
