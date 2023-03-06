@@ -190,6 +190,103 @@ exports.createUser = async function (
   });
 };
 
+exports.updateProfile = async function (first_name, last_name, image, phone, token) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if(first_name && last_name && phone){
+
+        let decoded = jwt.decode(token);
+
+        let user = await userModel.findOne({where : {id : decoded.user_id}});
+
+        if(user) {
+
+          console.log("User Found : ", user);
+          newProfile = {
+            first_name : first_name,
+            last_name : last_name,
+            phone : phone,
+            image : image
+          }
+
+
+             //Checking for image
+             if (image) {
+               image = await fileUpload(image, "users");
+
+               if (image) {
+                 newProfiel["image"] = image;
+               } else {
+                 console.log("Unable to save image");
+               }
+             } else {
+               newProfile["image"] = null;
+             }
+
+             await user.update(newProfile);
+
+             resolve({
+              status: 200,
+              message: "Profile updated successfully",
+            });
+  
+        }
+
+      } else {
+        if (!first_name)
+          reject({ status: 422, message: "First Name is required" });
+        if (!last_name)
+          reject({ status: 422, message: "Last Name is required" });
+        if (!phone) reject({ status: 422, message: "Phone is required" });
+      }
+
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+  })
+}
+
+
+exports.deleteProfile = async function (token, targetId) {
+  return new Promise(async (resolve, reject) => {
+    try {
+
+      let decoded = jwt.decode(token);
+
+      let user = await userModel.findByPk(decoded.user_id);
+
+      if (user) {
+        let targetUser = await userModel.findByPk(targetId);
+
+        await targetUser.destroy();
+
+        resolve({ status: 200, message: "Profile deleted" });
+      } else {
+        reject({ status: 404, message: "Requested user not found" });
+      }
+
+    } catch (error) {
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+    }
+  });
+};
+
 exports.forgotPassword = async function (email) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -359,7 +456,7 @@ exports.resetForgettedPassword = async function (token, new_password) {
   });
 };
 
-exports.fetchAllProfiles = async function (token, page, limit) {
+exports.fetchAllProfiles = async function (token) {
 
   return new Promise(async (resolve, reject)=>{
 
@@ -372,11 +469,72 @@ exports.fetchAllProfiles = async function (token, page, limit) {
     
       if(user){
     
-        let users = await userModel.findAll({
-          attributes: ['first_name', 'last_name', 'email', 'image', 'phone', 'createdAt','updatedAt'] //incomplete need to implement a way to fetch department, section, and branch details from corresponding columns
+        // let users = await userModel.findAll({
+        //   attributes: ['first_name', 'last_name', 'email', 'image', 'phone', 'createdAt','updatedAt'] //incomplete, need to implement a way to fetch department, section, and branch details from corresponding columns
+        // });
+
+        let idData = [];
+
+        let ids = await userModel.findAll({raw : true, attributes  : ['id']});
+
+        console.log("Ids : ", ids);
+
+        ids.map(id => { idData.push(id.id)});
+
+        console.log("idData : " , idData);
+
+        // let users = [];
+
+        idData.map(async (id) => { 
+          let user_info = {}
+          let user_role_id = [];
+          let users = [];
+          let user = (await userModel.findByPk(id));
+          user_info.first_name = user.first_name;
+          user_info.last_name = user.last_name;
+          let role_ids = await userRoleConnector.findAll({where : {user_id : id}, raw : true, attributes : ['role_id']});
+          role_ids.map(role => { user_role_id.push(role.role_id)});
+          console.log('Role ids : ',user_role_id );
+
+          let roles = await Promise.all(user_role_id.map(async (role_id) => {
+
+            let role = (await userRoles.findByPk(role_id)).getDataValue('role');
+            return role;
+            
+
+          }))
+
+          user_info.roles = roles;
+
+          console.log("Roles : ", roles);
+          users.push(user_info);
+          console.log("Users: ", users);
+
+
+          let user_by_id = await userModel.findByPk(id);
+          let department_id = user_by_id.department_id;
+          console.log("Department_id : ", department_id);
+          let section_id = user_by_id.section_id;
+          console.log("Section_id : ", section_id);
+          let branch_id = user_by_id.branch_id;
+          console.log("Branch_id : ", branch_id);
+
+          let department = (await departmentModel.findOne({ where : {id : department_id}})).getDataValue('department');
+          console.log("Department : ", department);
+          let section = (await sectionModel.findOne({where : {id : section_id}})).getDataValue('section');
+          console.log("Section : ", section);
+          let branch = (await branchModel.findOne({where : {id : branch_id}}));
+          console.log("Branch : ", branch);
+
+
+
         });
+
+
+
+
       
-        console.log("All fetched Users : ", users);
+        // console.log("All fetched Users : ", users);
         resolve({"status" : 200, "data" : users, "message" : "All users details fetched successfully"});
     
       }
@@ -583,5 +741,62 @@ exports.fetchAllBranches = async function (token) {
 
 
 
+}
+
+
+exports.fetchAllRoles = async function(token) {
+
+  return new Promise(async (resolve, reject) =>{
+
+    try {
+
+      const decoded = jwt.decode(token);
+
+      const user = await userModel.findByPk(decoded.user_id);
+  
+      if(user) {
+  
+        let data = await userRoles.findAll({raw: true, attributes : ['role']});
+        console.log("Type of data  : ", typeof(data));
+        let roles = [];
+        console.log("Role length before : ", roles.length);
+
+
+        // for(let i=0; i<data.length; i++){
+
+        //   roles.push(data[i].role);
+
+        // }
+
+
+
+        data.map(e => { roles.push(e.role)});
+
+        console.log("Roles : ", roles);
+
+        console.log("Roles length after : ", roles.length);
+
+
+        if(roles.length > 0) {
+
+          resolve({"status" : 200, "data" : roles, "message" : "User roles fetched successfully"});
+        }else {
+          reject({"status" : 400, "message" : "No roles found"});
+        }
+  
+      }else {
+        reject({"status" : 400, "message" : "Requested user not found"});
+      }
+      
+    } catch (error) {
+
+      console.log("Error : ", error);
+
+      reject({"status" : 400, "message" : "Something went wrong"});
+      
+    }
+
+  
+  })
 }
 

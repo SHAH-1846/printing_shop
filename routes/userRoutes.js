@@ -16,7 +16,9 @@ const setAccessControl = (access_type) => {
     }
 };
 
-router.post('/createuser',setAccessControl('1'), userController.createUser);
+router.post('/createuser',setAccessControl('1'), userController.createUser);// Admin creates a new user and mail is sent to the user's mail address, then user has to enter the details in mail to firstTimeLogin api
+router.put('/update_profile', userController.updateProfile);
+router.delete('/delete_profile/:target_id', setAccessControl('1'), userController.deleteProfile);
 // router.post("/upload_image", uploadImage.single("file"), uploadImageController.uploadFiles);
 //Create api to reset password after login of users
 router.post('/forgot-password', userController.forgotPasswordController);//For any users who can't login 
@@ -28,6 +30,7 @@ router.get('/fetch_single_profile', userController.fetchSingleProfile);//Fetch p
 router.get('/departments', setAccessControl('1'), userController.fetchAllDepartments);
 router.get('/sections', setAccessControl('1'), userController.fetchAllSections);
 router.get('/branches', setAccessControl('1'), userController.fetchAllBranches);
+router.get('/fetch_all_roles', setAccessControl('1'), userController.fetchAllRoles);
 
 
 

@@ -78,6 +78,8 @@ const users =  sequelize.define("users",{
         type : Sequelize.STRING
     }
 
+}, {
+    paranoid : true,
 });
 
 //do not use this in production

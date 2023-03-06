@@ -1,3 +1,4 @@
+const { response } = require('express');
 const userManager = require('../managers/userManager');
 const success_function = require('../utils/response-handler').success_function;
 const error_function = require('../utils/response-handler').error_function;
@@ -5,6 +6,7 @@ const validateCreateUser = require('../validation/create_user');
 const validateForgotPassword = require('../validation/forgot_password');
 const validateResetForgottedPassword = require('../validation/reset_forgetted_password');
 const validateResetPassword = require('../validation/reset_password');
+const validateUpdateProfile = require('../validation/updateProfile');
 
 
 exports.createUser = function(req, res)
@@ -54,6 +56,55 @@ exports.createUser = function(req, res)
 }
 
 
+exports.updateProfile = function (req,res) {
+  
+  const {errors, isValid} = validateUpdateProfile(req.body);
+
+  if(isValid){
+    console.log("Valid information");
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let image = req.body.image;
+    let phone = req.body.phone;
+
+    let authHeader = req.headers['authorization'];
+  let token = authHeader.split(' ')[1];
+
+    userManager
+      .updateProfile(first_name, last_name, image, phone, token)
+      .then((result) => {
+        let response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        let response = error_function(error);
+        res.status(error.status).send(response);
+      });
+
+
+  }else {
+    res.status(400).send({"status" : 400, "errors" : errors, "message" : "Validation Failed"});
+  }
+}
+
+
+exports.deleteProfile = function (req, res) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(' ')[1];
+
+  let targetId = req.params.target_id;
+
+  userManager.deleteProfile(token, targetId)
+    .then((result)=> {
+        const response = success_function(result);
+        res.status(result.status).send(response);
+    })
+    .catch((error)=> {
+      const response = error_function(error);
+      res.status(error.status).send(response);
+    })
+}
+
 exports.forgotPasswordController = function(req, res)
     {
       
@@ -98,7 +149,7 @@ exports.forgotPasswordController = function(req, res)
         let response = success_function(result);
         res.status(result.status).send(response);
     }).catch((error)=>{
-        let response = error_function(error)
+        let response = error_function(error);
         res.status(error.status).send(response);
     });
 
@@ -139,6 +190,8 @@ exports.resetForgettedPassword = function(req, res)
 
 exports.fetchAllProfiles = function (req,res){
 
+  console.log("Fetch all controller reached..");
+
     const authHeader = req.headers['authorization'];
     const token = authHeader ? authHeader.split(' ')[1] : null;
 
@@ -147,7 +200,7 @@ exports.fetchAllProfiles = function (req,res){
     let limit = req.query.limit;
 
     userManager
-      .fetchAllProfiles(token, page, limit)
+      .fetchAllProfiles(token)
       .then((result) => {
         let response = success_function(result);
         res.status(result.status).send(response);
@@ -236,5 +289,23 @@ exports.fetchAllBranches = function (req,res){
         res.status(error.status).send(response);
       });
 
+
+}
+
+
+exports.fetchAllRoles = function (req, res) {
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(' ')[1];
+
+  userManager.fetchAllRoles(token)
+    .then((result)=> {
+      const response = success_function(result);
+      res.status(result.status).send(response);
+    })
+    .catch((error) =>{
+      const response = error_function(error);
+      res.status(error.status).send(response);
+    })
 
 }

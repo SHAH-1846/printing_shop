@@ -17,15 +17,9 @@ module.exports= function validateCreateUserInput(data){
         data.first_name= !isEmpty(data.first_name) ? data.first_name : '';
         data.last_name= !isEmpty(data.last_name) ? data.last_name : '';
     
-        data.email= !isEmpty(data.email) ? data.email : '';
         // data.password= !isEmpty(data.password) ? data.password : '';
     
-        data.phone= !isEmpty(data.phone) ? data.phone : '';
-        data.role= !isEmpty(data.role) ? data.role : '';
-        data.department= !isEmpty(data.department) ? data.department : '';
-        data.section= !isEmpty(data.section) ? data.section : '';
-        data.branch= !isEmpty(data.branch) ? data.branch : '';
-    
+        data.phone= !isEmpty(data.phone) ? data.phone : '';    
     
     
         
@@ -45,42 +39,13 @@ module.exports= function validateCreateUserInput(data){
             errors.first_name= "Last Name must be between 2 and 30";
         }
 
-    
-        if(validator.isEmpty(data.email)) {
-            errors.email_empty= "Email field is required";
-        }
-    
-        if(!validator.isEmail(data.email)) {
-            errors.email_invalid= "Email is invalid";
-        }
-
         if(validator.isEmpty(data.phone)) {
             errors.phone= "Phone number is required";
         }
     
-        // if(validator.isEmpty(data.password)) {
-        //     errors.password= "Password is required";
-        // }
+
     
-        // if(!validator.isLength(data.password, {min: 6, max: 30})){
-        //     errors.password= "Password must be atleast 6 charactors";
-        // }
-    
-        if(validator.isEmpty(data.role)) {
-            errors.role= "Role field is required";
-        }
-    
-        if(validator.isEmpty(data.department)) {
-            errors.department= "Department field is required";
-        }
-    
-        if(validator.isEmpty(data.section)) {
-            errors.section= "Section field is required";
-        }
-      
-        if(validator.isEmpty(data.branch)) {
-            errors.branch= "Branch field is required";
-        }
+        
     
     
 
