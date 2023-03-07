@@ -20,6 +20,6 @@ id:{
 
 });
 
-//  sections.sync({ alter: true });
+ sections.sync({ alter: true });
 
 module.exports = sections

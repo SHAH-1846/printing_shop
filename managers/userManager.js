@@ -12,6 +12,7 @@ const { Op } = require("sequelize");
 const departmentModel = require("../db/models/departments");
 const sectionModel = require("../db/models/sections");
 const branchModel = require("../db/models/branches");
+const entitiesModel = require('../db/models/entities');
 const fileUpload = require('../utils/file_upload').fileUpload;
 const validateCreateUser = require('../validation/create_user');
 // const branches = require("../db/models/branches");
@@ -771,6 +772,8 @@ exports.fetchAllBranches = async function (token) {
 
 
 }
+
+
 
 
 exports.fetchAllRoles = async function(token) {

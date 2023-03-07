@@ -20,7 +20,9 @@ const authRoutes = require('./routes/authRoutes');
 
 const userRoutes = require('./routes/userRoutes');
 
-const model = require('./db/models/files');
+const jobRoutes  = require('./routes/jobRoutes');
+
+const model = require('./db/models/delivery_modes');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -49,4 +51,6 @@ sequelize.sync().then((result) => {
 app.use(authRoutes);
 
 app.use(userRoutes);
+
+app.use(jobRoutes);
 

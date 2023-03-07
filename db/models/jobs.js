@@ -17,16 +17,34 @@ id:{
         allowNull : false,
     },
 
-    requested_user_id : {
-        //from users table
+    requested_by : {
+        //from request_and_deliver table
         type: Sequelize.INTEGER,
+        allowNull : false,
+    },
+
+    requested_by_entity : {
+        //From entities table
+        type : Sequelize.INTEGER,
+        allowNull : false,
+    },
+
+    requested_by_department : {
+        //From departments table
+        type : Sequelize.INTEGER,
+        allowNull : false,
+    },
+
+    requested_by_section : {
+        // From sections table
+        type : Sequelize.INTEGER,
         allowNull : false,
     },
 
     requested_service_id : {
         //from services table
         type : Sequelize.INTEGER,
-        allowNull : false,
+        // allowNull : false,
     },
 
     job_type : {
@@ -34,7 +52,7 @@ id:{
         allowNull : false,
     },
 
-    job_description : {
+    job_req_comment : {
         type : Sequelize.TEXT,
         allowNull : false,
     },
@@ -76,7 +94,7 @@ id:{
 
     job_completed_on : {
     type : Sequelize.STRING,
-    allowNull : false,
+    // allowNull : false,
     },
 
 
@@ -86,13 +104,13 @@ id:{
     },
 
 
-    requested_sample : {
+    require_sample : {
     type : Sequelize.STRING,
     allowNull : false,
     },
 
 
-    requested_edits : {
+    require_edits : {
     type : Sequelize.STRING,
     allowNull : false,
     } ,
@@ -104,32 +122,32 @@ id:{
     },
 
 
-    delivery_address : {
+    deliver_to : {
     type : Sequelize.STRING,
     allowNull : false,
     },
 
 
-    entity : {
-    type : Sequelize.STRING,
+    deliver_to_entity_id : {
+    type : Sequelize.INTEGER,
     allowNull : false,
     },
 
 
-    school : {
+    deliver_to_school : {
     type : Sequelize.STRING,
-    allowNull : false,
+    // allowNull : false,
     },
 
 
-    department_id : {
+    deliver_to_department_id : {
         //from departments table
     type : Sequelize.INTEGER,
     allowNull : false,
     },
 
 
-    section_id : {
+    deliver_to_section_id : {
         //from sections table
     type : Sequelize.INTEGER,
     allowNull : false,
@@ -137,26 +155,27 @@ id:{
     },
 
 
-    branch_id : {
+    deliver_to_branch_id : {
         //from branches table
     type : Sequelize.INTEGER,
-    allowNull : false,
+    // allowNull : false,
     },
 
-    finishing : {
+    require_cover : {
         type : Sequelize.STRING,
         allowNull : false,
     },
 
-    print_cover : {
+    require_finishing : {
         type : Sequelize.STRING,
         allowNull : false,
     },
 
-    print_pages : {
-        type : Sequelize.STRING,
-        allowNull : false,
-    }
+
+    // print_pages : {
+    //     type : Sequelize.STRING,
+    //     // allowNull : false,
+    // }
 
 
 
@@ -165,6 +184,6 @@ id:{
 
 });
 
-//  jobs.sync({ alter: true });
+ jobs.sync({ alter: true });
 
 module.exports = jobs
