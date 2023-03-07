@@ -462,8 +462,8 @@ exports.fetchAllProfiles = async function (token) {
 
     try {
 
-      console.log("Token : ", token);
-      
+      // console.log("Token : ", token);
+      //decoding token and finding the requested user
       const decoded = jwt.decode(token);
       const user = await userModel.findOne({where : {id : decoded.user_id}});
     
@@ -473,63 +473,92 @@ exports.fetchAllProfiles = async function (token) {
         //   attributes: ['first_name', 'last_name', 'email', 'image', 'phone', 'createdAt','updatedAt'] //incomplete, need to implement a way to fetch department, section, and branch details from corresponding columns
         // });
 
+        //Array to store the ids of all users
         let idData = [];
 
+        //Getting the id's
         let ids = await userModel.findAll({raw : true, attributes  : ['id']});
 
-        console.log("Ids : ", ids);
+        // console.log("Ids : ", ids);
 
+        //Pushing all ids to the idData array using map function
         ids.map(id => { idData.push(id.id)});
 
-        console.log("idData : " , idData);
+        // console.log("idData : " , idData);
 
         // let users = [];
-
-        idData.map(async (id) => { 
+      
+        //Mapping idData inorder to fetch user details
+       let users =  await Promise.all(idData.map(async (id) => { 
+        //Variable to store user_info
           let user_info = {}
+          //Variable to store user_role ids
           let user_role_id = [];
-          let users = [];
+
+
+          //Finding the specific user from database using primary key
           let user = (await userModel.findByPk(id));
+
+
+          //Saving basic info of user from user table to user_info
           user_info.first_name = user.first_name;
           user_info.last_name = user.last_name;
-          let role_ids = await userRoleConnector.findAll({where : {user_id : id}, raw : true, attributes : ['role_id']});
-          role_ids.map(role => { user_role_id.push(role.role_id)});
-          console.log('Role ids : ',user_role_id );
 
+
+          //Finding role id's of the user from user-role connector table using user_id
+          let role_ids = await userRoleConnector.findAll({where : {user_id : id}, raw : true, attributes : ['role_id']});
+
+          //Mapping role_ids from database and storing only the role_id attribute to user_role_id variable
+          role_ids.map(role => { user_role_id.push(role.role_id)});
+          // console.log('Role ids : ',user_role_id );
+
+          //Then we got the role_ids and map the user_role_ids inorder to find the roles from roles table
           let roles = await Promise.all(user_role_id.map(async (role_id) => {
 
+            //Find specific role names from roles table
             let role = (await userRoles.findByPk(role_id)).getDataValue('role');
             return role;
             
 
           }))
 
+          // saving roles to the  user_info object variable
           user_info.roles = roles;
 
-          console.log("Roles : ", roles);
-          users.push(user_info);
-          console.log("Users: ", users);
+          // console.log("Roles : ", roles);
+          // users.push(user_info);
+          // console.log("Users: ", users);
 
 
-          let user_by_id = await userModel.findByPk(id);
-          let department_id = user_by_id.department_id;
-          console.log("Department_id : ", department_id);
-          let section_id = user_by_id.section_id;
-          console.log("Section_id : ", section_id);
-          let branch_id = user_by_id.branch_id;
-          console.log("Branch_id : ", branch_id);
+          // let user_by_id = await userModel.findByPk(id);
+          //Finding department, section and branch id's
+          let department_id = user.department_id;
+          // console.log("Department_id : ", department_id);
+          let section_id = user.section_id;
+          // console.log("Section_id : ", section_id);
+          let branch_id = user.branch_id;
+          // console.log("Branch_id : ", branch_id);
 
-          let department = (await departmentModel.findOne({ where : {id : department_id}})).getDataValue('department');
+          //Finding department, section and banch names from specific tables and saving it to the user_info object variable
+          let department = (await departmentModel.findOne({ where : {id : department_id}, attributes : ['department'], raw : true})).department;
           console.log("Department : ", department);
-          let section = (await sectionModel.findOne({where : {id : section_id}})).getDataValue('section');
-          console.log("Section : ", section);
-          let branch = (await branchModel.findOne({where : {id : branch_id}}));
-          console.log("Branch : ", branch);
+          user_info.department = department;
+          let section = (await sectionModel.findOne({where : {id : section_id}, attributes : ['section'], raw : true})).section;
+          // console.log("Section : ", section);
+          user_info.section = section;
+          let branch = (await branchModel.findOne({where : {id : branch_id}, raw : true, attributes : ['branch']})).branch;
+          // console.log("Branch : ", branch);
+          user_info.branch = branch;
+
+          //Returning the user_info of the user of mapped_id
+          return user_info;
+          // console.log("Users  : ", users);
 
 
 
-        });
+        }));
 
+        console.log("Users : ", users);
 
 
 
