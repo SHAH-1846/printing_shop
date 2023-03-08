@@ -12,6 +12,8 @@ const validateUpdateProfile = require('../validation/updateProfile');
 exports.createUser = function(req, res)
 {
 
+  console.log("Request Body : ", req.body);
+
   const {errors, isValid}=  validateCreateUser(req.body);
   console.log("Errors from controller : ", errors);
   console.log("isValid from controller : ", isValid);

@@ -17,38 +17,39 @@ id:{
         allowNull : false,
     },
 
-    requested_by : {
-        //from request_and_deliver table
+    requested_by_id : {
+        //from clients table
         type: Sequelize.INTEGER,
         allowNull : false,
     },
 
-    requested_by_entity : {
+    requested_by_entity_id : {
         //From entities table
         type : Sequelize.INTEGER,
         allowNull : false,
     },
 
-    requested_by_department : {
+    requested_by_department_id : {
         //From departments table
         type : Sequelize.INTEGER,
         allowNull : false,
     },
 
-    requested_by_section : {
+    requested_by_section_id : {
         // From sections table
         type : Sequelize.INTEGER,
         allowNull : false,
     },
 
-    requested_service_id : {
-        //from services table
-        type : Sequelize.INTEGER,
-        // allowNull : false,
-    },
+    // requested_service_id : {
+    //     //from services table
+    //     type : Sequelize.INTEGER,
+    //     // allowNull : false,
+    // },
 
-    job_type : {
-        type : Sequelize.STRING,
+    job_type_id : {
+        //From job_types table
+        type : Sequelize.INTEGER,
         allowNull : false,
     },
 
@@ -57,8 +58,9 @@ id:{
         allowNull : false,
     },
 
-    document_type : {
-        type : Sequelize.STRING,
+    document_type_id : {
+        //From document_types table
+        type : Sequelize.INTEGER,
         allowNull : false,
     },
 
@@ -68,8 +70,9 @@ id:{
     },
 
     
-    document_mode : {
-        type : Sequelize.STRING,
+    document_mode_id : {
+        //From document_modes table
+        type : Sequelize.INTEGER,
         allowNull : false,
     },
 
@@ -87,7 +90,8 @@ id:{
 
 
     job_status : {
-    type : Sequelize.STRING,
+        //Newly created job will go to the pending status and when it is done job_status will be updated with done status
+    type : Sequelize.INTEGER,
     allowNull : false,
     },
 
@@ -116,14 +120,16 @@ id:{
     } ,
 
 
-    delivery_mode : {
-    type : Sequelize.STRING,
+    delivery_mode_id : {
+        //From delivery_modes table
+    type : Sequelize.INTEGER,
     allowNull : false,
     },
 
 
-    deliver_to : {
-    type : Sequelize.STRING,
+    deliver_to_id : {
+        //From clients table
+    type : Sequelize.INTEGER,
     allowNull : false,
     },
 
@@ -134,10 +140,10 @@ id:{
     },
 
 
-    deliver_to_school : {
-    type : Sequelize.STRING,
-    // allowNull : false,
-    },
+    // deliver_to_school : {
+    // type : Sequelize.STRING,
+    // // allowNull : false,
+    // },
 
 
     deliver_to_department_id : {
@@ -187,3 +193,5 @@ id:{
  jobs.sync({ alter: true });
 
 module.exports = jobs
+
+

@@ -38,11 +38,11 @@ module.exports= function validateCreateUserInput(data){
         }
 
         if(validator.isEmpty(data.last_name)) {
-            errors.last_name= "Last field is required";
+            errors.last_name= "Last Name field is required";
         }
     
-        if(!validator.isLength(data.last_name,{min: 2, max: 30})){
-            errors.first_name= "Last Name must be between 2 and 30";
+        if(!validator.isLength(data.last_name,{min: 1, max: 30})){
+            errors.last_name= "Last Name must be between 1 and 30";
         }
 
     

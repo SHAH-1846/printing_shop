@@ -22,7 +22,9 @@ const userRoutes = require('./routes/userRoutes');
 
 const jobRoutes  = require('./routes/jobRoutes');
 
-const model = require('./db/models/delivery_modes');
+const finishingAndBindingRoutes = require('./routes/finishingAndBindingRoutes');
+
+const model = require('./db/models/job_status');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -53,4 +55,6 @@ app.use(authRoutes);
 app.use(userRoutes);
 
 app.use(jobRoutes);
+
+app.use(finishingAndBindingRoutes);
 
