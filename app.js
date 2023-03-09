@@ -24,7 +24,7 @@ const jobRoutes  = require('./routes/jobRoutes');
 
 const finishingAndBindingRoutes = require('./routes/finishingAndBindingRoutes');
 
-const model = require('./db/models/job_status');
+const model = require('./db/models/finishing_and_binding');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));

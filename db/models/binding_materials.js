@@ -3,7 +3,7 @@ const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const materials = sequelize.define("materials", {
+const binding_materials = sequelize.define("binding_materials", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -18,6 +18,6 @@ const materials = sequelize.define("materials", {
 
 });
 
- materials.sync({ alter: true });
+ binding_materials.sync({ alter: true });
 
-module.exports = materials
+module.exports = binding_materials

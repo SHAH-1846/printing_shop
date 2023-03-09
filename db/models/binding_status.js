@@ -1,9 +1,11 @@
+//Model to store binding status in finishing and binding section
+
 const {Sequelize} = require('sequelize');
 
 const sequelize = require('../db-conn');
 
 
-const materials = sequelize.define("materials", {
+const binding_status = sequelize.define("binding_status", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -11,13 +13,12 @@ const materials = sequelize.define("materials", {
     primaryKey: true,
   },
 
-  material: {
+  status: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-
 });
 
- materials.sync({ alter: true });
+binding_status.sync({ alter : true });
 
-module.exports = materials
+module.exports = binding_status
