@@ -13,8 +13,10 @@ const departmentModel = require("../db/models/departments");
 const sectionModel = require("../db/models/sections");
 const branchModel = require("../db/models/branches");
 const entitiesModel = require('../db/models/entities');
+const fs = require('fs');
 const fileUpload = require('../utils/file_upload').fileUpload;
 const validateCreateUser = require('../validation/create_user');
+const users = require("../db/models/users");
 // const branches = require("../db/models/branches");
 
 exports.createUser = async function (
@@ -149,10 +151,18 @@ exports.createUser = async function (
           }
 
           //saving
-          await userModel.findOrCreate({
+          let [newUser, created] = await userModel.findOrCreate({
             where: { email: email },
             defaults: new_user,
+            raw : true
           });
+
+          console.log("New user : ", newUser);
+
+          console.log("New user id : " ,newUser.id );
+
+          let role_id = (await userRoles.findOne({where : {role : role}, attributes : ['id']})).getDataValue('id');
+          let setRoleId = await userRoleConnector.create({user_id : newUser.id, role_id : role_id});
 
           //Sending email and password
           let email_template = await set_password_template(
@@ -504,6 +514,33 @@ exports.fetchAllProfiles = async function (token) {
           //Saving basic info of user from user table to user_info
           user_info.first_name = user.first_name;
           user_info.last_name = user.last_name;
+          user_info.phone = user.phone;
+
+          if(user.image !== null) {
+
+            user_info.image = user.image;
+
+          }else {
+            user_info.image = "No image";
+          }
+
+          let image_path = user.image
+          console.log("Image Path : ", image_path);
+          // if(image_path !== null) {
+
+
+          //   fs.readFile(`${image_path}`, (err, data) => {
+          //     if (err) throw err;
+          //     // encode the data as base64 string
+          //     const base64Image = Buffer.from(data).toString("base64");
+          //     // send the base64 encoded string to the frontend
+          //     user_info.image = base64Image;
+          //   });
+
+          // }else {
+          //   user_info.image = "No image";
+          // }
+
 
 
           //Finding role id's of the user from user-role connector table using user_id

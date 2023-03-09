@@ -24,7 +24,7 @@ exports.createNew = async function(token, job_id, binding_operator, binding_type
             
               if(job_id && binding_operator && binding_type && binding_status && material && binding_page_count && binding_quantity && require_perforation && binding_material && unit_cost) {
                 
-                let binding_operator_id = (await bindingOperatorsModel.findOne({where : {operator : binding_operator}, attributes : ['id'], raw : true})).id;
+                let binding_operator_id = (await bindingOperatorsModel.findOne({where : {binding_operator : binding_operator}, attributes : ['id'], raw : true})).id;
                 console.log("binding_operator_id : ", binding_operator_id);
 
                 let binding_type_id = (await bindingTypesModel.findOne({where : {binding_type : binding_type}, attributes : ['id'], raw : true})).id;
@@ -64,7 +64,7 @@ exports.createNew = async function(token, job_id, binding_operator, binding_type
                   let newInstance = await finishingAndBindingModel.create(new_instance);
                   newInstance.save();
 
-                  resolve({"status" : 200, "message" : "New instance created for finishing and binding section created successfully"});
+                  resolve({"status" : 200, "message" : "New instance created for finishing and binding section"});
 
 
               }else {

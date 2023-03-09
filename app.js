@@ -37,6 +37,8 @@ app.use(cors({
   "optionsSuccessStatus": 204
 }));
 
+app.use('/uploads',express.static(__dirname + '/uploads'));
+
 
 sequelize.sync().then((result) => {
 //   result.query('CREATE DATABASE IF NOT EXISTS task_management;').then(() => {
