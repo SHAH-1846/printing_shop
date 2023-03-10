@@ -94,6 +94,8 @@ exports.deleteProfile = function (req, res) {
   const authHeader = req.headers['authorization'];
   const token = authHeader.split(' ')[1];
 
+  console.log("Token from delete route : ", token);
+
   let targetId = req.params.target_id;
 
   userManager.deleteProfile(token, targetId)
@@ -301,6 +303,26 @@ exports.fetchAllRoles = function (req, res) {
   const token = authHeader.split(' ')[1];
 
   userManager.fetchAllRoles(token)
+    .then((result)=> {
+      const response = success_function(result);
+      res.status(result.status).send(response);
+    })
+    .catch((error) =>{
+      const response = error_function(error);
+      res.status(error.status).send(response);
+    })
+
+}
+
+exports.addRoles = function (req, res) {
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(' ')[1];
+
+  let user_id = req.body.user_id;
+  let roles = req.body.roles;
+
+  userManager.addRoles(token, user_id, roles)
     .then((result)=> {
       const response = success_function(result);
       res.status(result.status).send(response);

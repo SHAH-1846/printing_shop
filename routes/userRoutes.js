@@ -17,20 +17,22 @@ const setAccessControl = (access_type) => {
 };
 
 router.post('/createuser',setAccessControl('1'), userController.createUser);// Admin creates a new user and mail is sent to the user's mail address, then user has to enter the details in mail to firstTimeLogin api
-router.put('/update_profile', userController.updateProfile);
-router.delete('/delete_profile/:target_id', setAccessControl('1'), userController.deleteProfile);
-// router.post("/upload_image", uploadImage.single("file"), uploadImageController.uploadFiles);
+router.put('/update-profile', userController.updateProfile);
+router.put('/add-roles', userController.addRoles);
+
+router.delete('/delete-profile/:target_id', setAccessControl('1'), userController.deleteProfile);
+// router.post("/upload-image", uploadImage.single("file"), uploadImageController.uploadFiles);
 //Create api to reset password after login of users
 router.post('/forgot-password', userController.forgotPasswordController);//For any users who can't login 
-router.post('/reset_forgetted_password', userController.resetForgettedPassword);//After sending mail through forgot-password
+router.post('/reset-forgetted-password', userController.resetForgettedPassword);//After sending mail through forgot-password
 router.post('/reset-password', userController.resetPasswordController);//For logged in users for just only to change the password
 
-router.get('/fetch_all_profiles', userController.fetchAllProfiles );//Fetch all profiles (incomplete)
-router.get('/fetch_single_profile', userController.fetchSingleProfile);//Fetch profile of a single user, usually used after login
+router.get('/fetch-all-profiles', userController.fetchAllProfiles );//Fetch all profiles (incomplete)
+router.get('/fetch-single-profile', userController.fetchSingleProfile);//Fetch profile of a single user, usually used after login
 router.get('/departments', setAccessControl('1'), userController.fetchAllDepartments);
 router.get('/sections', setAccessControl('1'), userController.fetchAllSections);
 router.get('/branches', setAccessControl('1'), userController.fetchAllBranches);
-router.get('/fetch_all_roles', setAccessControl('1'), userController.fetchAllRoles);
+router.get('/fetch-all-roles', setAccessControl('1'), userController.fetchAllRoles);
 
 
 

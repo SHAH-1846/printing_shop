@@ -512,6 +512,7 @@ exports.fetchAllProfiles = async function (token) {
 
 
           //Saving basic info of user from user table to user_info
+          user_info.id = user.id;
           user_info.first_name = user.first_name;
           user_info.last_name = user.last_name;
           user_info.phone = user.phone;

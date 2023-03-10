@@ -24,7 +24,9 @@ const jobRoutes  = require('./routes/jobRoutes');
 
 const finishingAndBindingRoutes = require('./routes/finishingAndBindingRoutes');
 
-const model = require('./db/models/finishing_and_binding');
+const printCoverRoutes = require('./routes/printCoverRoutes');
+
+const model = require('./db/models/print_cover_sides');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -59,4 +61,6 @@ app.use(userRoutes);
 app.use(jobRoutes);
 
 app.use(finishingAndBindingRoutes);
+
+app.use(printCoverRoutes);
 
