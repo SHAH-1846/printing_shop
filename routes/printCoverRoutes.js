@@ -18,6 +18,8 @@ router.get('/print-cover-status', setAccessControl('1'), printCoverController.fe
 router.get('/print-cover-printers', setAccessControl('1'), printCoverController.fetchAllPrintCoverPrinters);
 router.get('/print-cover-paper-types', setAccessControl('1'), printCoverController.fetchAllPrintCoverPaperTypes);
 router.get('/print-cover-sides', setAccessControl('1'), printCoverController.fetchAllPrintCoverSides);
+router.get('/print-cover-machines', setAccessControl('1'), printCoverController.fetchAllPrintCoverMachines);
+router.get('/print-cover-materials', setAccessControl('1'), printCoverController.fetchAllPrintCoverMaterials);
 
 
 

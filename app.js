@@ -26,7 +26,9 @@ const finishingAndBindingRoutes = require('./routes/finishingAndBindingRoutes');
 
 const printCoverRoutes = require('./routes/printCoverRoutes');
 
-const model = require('./db/models/print_cover_sides');
+const printPagesRoutes = require('./routes/printPagesRoutes');
+
+const model = require('./db/models/print_pages_machine');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
@@ -47,6 +49,7 @@ sequelize.sync().then((result) => {
 //     // Safe to use sequelize now
 //     console.log("Database Created by sequelize.......");
 //   });
+
   app.listen(process.env.NODE_PORT);
   console.log("Database Connection Established");
   console.log(`Running on port ${process.env.NODE_PORT}`);
@@ -63,4 +66,6 @@ app.use(jobRoutes);
 app.use(finishingAndBindingRoutes);
 
 app.use(printCoverRoutes);
+
+app.use(printPagesRoutes);
 

@@ -20,6 +20,7 @@ exports.createNew = function (req, res) {
     let require_lamination = req.body.require_lamination; // Yes or No
     let print_cover_quantity = req.body.print_cover_quantity;
     let print_cover_machine = req.body.print_cover_machine; // (Dropdown)
+    let print_cover_material = req.body.print_cover_material; // (Dropdown)
     // let request_date; // Insert date using dayjs
     // let completed_date; // Insert date using dayjs
     finishingAndBindingManager.createNew(token, job_id, binding_operator, binding_type, binding_status, material, binding_page_count, binding_quantity, require_perforation, binding_material, unit_cost)
@@ -131,6 +132,41 @@ exports.fetchAllPrintCoverOperators = function (req, res) {
 
   
     printCoverManager.fetchAllPrintCoverSides(token)
+      .then((result) => {
+        const response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        const response = error_function(error);
+        res.status(error.status).send(response);
+      })
+  }
+
+
+  exports.fetchAllPrintCoverMachines = function (req, res) {
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(' ')[1];
+
+  
+    printCoverManager.fetchAllPrintCoverMachines(token)
+      .then((result) => {
+        const response = success_function(result);
+        res.status(result.status).send(response);
+      })
+      .catch((error) => {
+        const response = error_function(error);
+        res.status(error.status).send(response);
+      })
+  }
+
+  exports.fetchAllPrintCoverMaterials = function (req, res) {
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(' ')[1];
+
+  
+    printCoverManager.fetchAllPrintCoverMaterials(token)
       .then((result) => {
         const response = success_function(result);
         res.status(result.status).send(response);

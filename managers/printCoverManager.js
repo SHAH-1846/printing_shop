@@ -5,6 +5,8 @@ const printCoverStatusModel = require('../db/models/print_cover_status');
 const printCoverPrintersModel = require('../db/models/print_cover_printer');
 const printCoverPaperTypesModel = require('../db/models/print_cover_paper_type');
 const printCoverSidesModel = require('../db/models/print_cover_sides');
+const printCoverMachinesModel = require('../db/models/print_cover_machine');
+const printCoverMaterialsModel = require('../db/models/print_cover_material');
 const jwt = require('jsonwebtoken');
 
 exports.fetchAllPrintCoverOperators = async function (token) {
@@ -197,6 +199,76 @@ exports.fetchAllPrintCoverOperators = async function (token) {
           })
 
           resolve({"status" : 200, "data" : data, "message" : "Print cover sides fetched successfully"});
+        }else {
+          reject({"status" : 400, "message" : "Requested user not found"});
+        }
+      } catch (error) {
+  
+        reject({
+          status: 400,
+          message: error
+            ? error.message
+              ? error.message
+              : error
+            : "Something went wrong",
+        });
+        
+      }
+    })
+  }
+
+
+  exports.fetchAllPrintCoverMachines = async function (token) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const decoded = jwt.decode(token);
+        const user = await usersModel.findByPk(decoded.user_id);
+  
+        if(user){
+
+          let print_cover_machines = (await printCoverMachinesModel.findAll({attributes : ['print_cover_machine']}));
+          console.log("print_cover_machines : ", print_cover_machines);
+  
+          let data = print_cover_machines.map((e) => {
+            return e.print_cover_machine;
+          })
+
+          resolve({"status" : 200, "data" : data, "message" : "Print cover machines fetched successfully"});
+        }else {
+          reject({"status" : 400, "message" : "Requested user not found"});
+        }
+      } catch (error) {
+  
+        reject({
+          status: 400,
+          message: error
+            ? error.message
+              ? error.message
+              : error
+            : "Something went wrong",
+        });
+        
+      }
+    })
+  }
+
+
+  exports.fetchAllPrintCoverMaterials = async function (token) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const decoded = jwt.decode(token);
+        const user = await usersModel.findByPk(decoded.user_id);
+  
+        if(user){
+
+          let print_cover_materials = (await printCoverMaterialsModel.findAll({attributes : ['print_cover_material']}));
+          console.log("print_cover_materials : ", print_cover_materials);
+  
+          let data = print_cover_materials.map((e) => {
+            return e.print_cover_material;
+          })
+
+          resolve({"status" : 200, "data" : data, "message" : "Print cover materials fetched successfully"});
         }else {
           reject({"status" : 400, "message" : "Requested user not found"});
         }

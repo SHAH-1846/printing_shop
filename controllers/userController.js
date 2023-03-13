@@ -320,9 +320,9 @@ exports.addRoles = function (req, res) {
   const token = authHeader.split(' ')[1];
 
   let user_id = req.body.user_id;
-  let roles = req.body.roles;
+  let role = req.body.role;
 
-  userManager.addRoles(token, user_id, roles)
+  userManager.addRoles(token, user_id, role)
     .then((result)=> {
       const response = success_function(result);
       res.status(result.status).send(response);

@@ -17,6 +17,7 @@ const fs = require('fs');
 const fileUpload = require('../utils/file_upload').fileUpload;
 const validateCreateUser = require('../validation/create_user');
 const users = require("../db/models/users");
+const { decode } = require("punycode");
 // const branches = require("../db/models/branches");
 
 exports.createUser = async function (
@@ -170,6 +171,7 @@ exports.createUser = async function (
             email,
             otp
           );
+
           // console.log(email_template);
           await email_transporter(email, "Update Password", email_template);
           resolve({
@@ -870,3 +872,62 @@ exports.fetchAllRoles = async function(token) {
   })
 }
 
+
+
+exports.addRoles = async function (
+  //Create another login for first time login
+  token,
+  user_id,
+  role
+) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //checking if requested user is admin or not
+
+      //checking if user exist
+      if (token && role && user_id
+      ) {
+
+        let decoded = jwt.decode(token);
+        let user = await userModel.findOne({ where: {id: decoded.user_id } });
+
+        // decoded = jwt.decode(token);
+        // const user_id = decoded.user_id;
+        // user_role_id = userRoleConnector.findAll({ where: { user_id: user_id } });
+
+        if (user) {
+          //user exist
+          let target_user = await userModel.findOne({where : {id : user_id}});
+          console.log("Role : ", role);
+          let user_role_id = (await userRoles.findOne({where : {role : role}})).getDataValue('id');
+          console.log("user_role_id : ", user_role_id);
+          let addRole = await userRoleConnector.create({user_id : user_id, role_id : user_role_id});
+
+          if(addRole) {
+
+            resolve({"status" : 200, "message" : "User role added successfully"});
+          }else {
+
+            reject({"status" : 400, "message" : "Cannot add user role"});
+          }
+
+        } else {
+          reject({"status" : 400, "message" : "Cannot find requested user"});
+        }
+          // console.log(email_template)
+
+        }else {
+          reject({"status" : 400, "message" : "Datas not sufficient"});
+        }
+    } catch (error) {
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+    }
+  });
+};
