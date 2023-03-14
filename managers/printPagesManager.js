@@ -1,4 +1,5 @@
 const usersModel = require('../db/models/users');
+const printPagesModel = require('../db/models/print_pages');
 const job_print_operators_model = require('../db/models/job_print_operator');
 const job_print_colors_model = require('../db/models/job_print_color');
 const print_pages_printers_model = require('../db/models/print_pages_printer');
@@ -8,7 +9,7 @@ const jwt  = require('jsonwebtoken');
 
 
 
-exports.createNew = async function(token, job_print_operator, job_print_color, print_sides, item_pages, print_pages_printer, job_print_quantity,  paper_type, job_req_paper_quantity, job_print_comment, print_pages_machine, job_print_total) {
+exports.createNew = async function(token, job_id, job_print_operator, job_print_color, print_sides, item_pages, print_pages_printer, job_print_quantity,  paper_type, job_req_paper_quantity, job_print_comment, print_pages_machine, job_print_total) {
 
     return new Promise(async (resolve, reject) => {
         try {
@@ -27,7 +28,7 @@ exports.createNew = async function(token, job_print_operator, job_print_color, p
                   let job_print_color_id = (await job_print_colors_model.findOne({where : {job_print_color : job_print_color}, attributes : ['id'], raw : true})).id;
                   console.log("job_print_color_id : ", job_print_color_id);
   
-                  let print_pages_printer_id = (await bindingStatusModel.findOne({where : {print_pages_printer : print_pages_printer}, attributes : ['id'], raw : true})).id;
+                  let print_pages_printer_id = (await print_pages_printers_model.findOne({where : {print_pages_printer : print_pages_printer}, attributes : ['id'], raw : true})).id;
                   console.log("print_pages_printer : ", print_pages_printer);
   
                   let paper_type_id = (await print_pages_paper_types_model.findOne({where : {paper_type : paper_type}, attributes : ['id'], raw : true})).id;
@@ -48,8 +49,8 @@ exports.createNew = async function(token, job_print_operator, job_print_color, p
                         print_pages_printer_id : print_pages_printer_id, // Dropdown (id)
                         job_print_quantity : job_print_quantity,
                         paper_type_id : paper_type_id, // Dropdown (id)
-                        job_req_paper_quantity : job_req_paper_quantity, // Dropdown (id)
-                        job_print_comment : job_print_comment, // Dropdown (id)
+                        job_req_paper_quantity : job_req_paper_quantity, 
+                        job_print_comment : job_print_comment,
                         print_pages_machine_id : print_pages_machine_id, //Dropdown (id)
                         job_print_total : job_print_total
                     }
@@ -57,10 +58,10 @@ exports.createNew = async function(token, job_print_operator, job_print_color, p
                     console.log("New Instance : ", new_instance);
   
                     //Saving to database
-                    let newInstance = await finishingAndBindingModel.create(new_instance);
+                    let newInstance = await printPagesModel.create(new_instance);
                     newInstance.save();
   
-                    resolve({"status" : 200, "message" : "New instance created for finishing and binding section"});
+                    resolve({"status" : 200, "message" : "New instance created for print pages section"});
   
   
                 }else {

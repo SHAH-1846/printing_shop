@@ -176,6 +176,7 @@ exports.resetForgettedPassword = function(req, res)
 
     let token = req.body.token;
     let new_password = req.body.new_password;
+    let confirm_new_password = req.body.confirm_new_password;
 
     userManager.resetForgettedPassword(token, new_password)
     .then((result)=>{
@@ -334,4 +335,46 @@ exports.addRoles = function (req, res) {
 
 }
 
+exports.fetchSingleUserDetails = function (req, res) {
 
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(' ')[1];
+
+  const id = req.params.id;
+
+  userManager.fetchSingleUserDetails(token, id)
+    .then((result)=> {
+      const response = success_function(result);
+      res.status(result.status).send(response);
+    })
+    .catch((error) =>{
+      const response = error_function(error);
+      res.status(error.status).send(response);
+    })
+
+}
+
+
+exports.updateSingleUserDetails = function (req, res) {
+
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(' ')[1];
+
+  const id = req.params.id;
+  const role = req.body.role;
+  const department = req.body.department;
+  const branch = req.body.branch;
+  const section = req.body.section;
+
+
+  userManager.updateSingleUserDetails(token, id, role, department, branch, section)
+    .then((result)=> {
+      const response = success_function(result);
+      res.status(result.status).send(response);
+    })
+    .catch((error) =>{
+      const response = error_function(error);
+      res.status(error.status).send(response);
+    })
+
+}

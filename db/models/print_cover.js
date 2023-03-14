@@ -3,7 +3,7 @@ const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const print_pages =  sequelize.define("print_pages",{
+const print_cover =  sequelize.define("print_cover",{
 
     id:{
         type: Sequelize.INTEGER,
@@ -18,74 +18,80 @@ const print_pages =  sequelize.define("print_pages",{
         allowNull : false
     },
 
-    job_print_operator_id : {
-        //From job_print_operators table
+    print_cover_operator_id : {
+        //From print_cover_operator table
         type: Sequelize.INTEGER,
         allowNull : false,
     },
 
-    job_print_color_id : {
-        //From job_print_colors table
+    print_cover_color_id : {
+        //From print_cover_color table
         type : Sequelize.INTEGER,
         allowNull : false
     },
 
     
-    print_sides : {
-        //Single or Double
+    print_cover_status_id : {
+        // From print_cover_status table
         type: Sequelize.STRING,
         allowNull : false,
     },
 
-    item_pages : {
+    print_cover_printer_id : {
+        // From print_cover_printer table
         type : Sequelize.INTEGER,
         allowNull : false
     },
 
     
-    print_pages_printer_id : {
-        //From print_pages_printer table
+    print_cover_paper_type_id : {
+        //From print_cover_paper_type table
         type: Sequelize.INTEGER,
         allowNull : false,
     },
 
-    job_print_quantity : {
+    print_cover_side_id : {
+        // From print_cover_sides table
         type: Sequelize.INTEGER,
         allowNull : false,
     },
 
-    paper_type_id : {
-        //From print_pages_paper_type table
+    require_lamination : {
+        // Yes or No
         type: Sequelize.STRING,
         allowNull : false,
     },
 
 
-    job_req_paper_quantity : {
+    print_cover_quantity : {
         type : Sequelize.INTEGER,
         allowNull : false
     },
 
-    job_print_comment : {
+    print_cover_machine_id : {
+        //From print_cover_machines table
         type : Sequelize.STRING,
         allowNull : false
     },
 
-    print_pages_machine_id : {
-        //From print_pages_machines table
+    print_cover_material_id : {
+        //From print_cover_materials table
         type : Sequelize.INTEGER,
         allowNull : false
     },
 
-    job_print_total : {
+    request_date : {
         type : Sequelize.STRING,
         allowNull : false
+    },
+
+    completed_date : {
+        type : Sequelize.STRING
     }
-
 
 
 });
 
- print_pages.sync({ alter: true });
+ print_cover.sync({ alter: true });
 
-module.exports = print_pages
+module.exports = print_cover

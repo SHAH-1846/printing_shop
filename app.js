@@ -28,7 +28,7 @@ const printCoverRoutes = require('./routes/printCoverRoutes');
 
 const printPagesRoutes = require('./routes/printPagesRoutes');
 
-const model = require('./db/models/print_pages_machine');
+const model = require('./db/models/print_cover');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));

@@ -24,17 +24,19 @@ router.delete('/delete-profile/:target_id', setAccessControl('1'), userControlle
 // router.post("/upload-image", uploadImage.single("file"), uploadImageController.uploadFiles);
 //Create api to reset password after login of users
 router.post('/forgot-password', userController.forgotPasswordController);//For any users who can't login 
-router.post('/reset-forgetted-password', userController.resetForgettedPassword);//After sending mail through forgot-password
+router.post('/reset-forgetten-password', userController.resetForgettedPassword);//After sending mail through forgot-password
 router.post('/reset-password', userController.resetPasswordController);//For logged in users for just only to change the password
 
 router.get('/fetch-all-profiles', userController.fetchAllProfiles );//Fetch all profiles (completed)
 router.get('/fetch-single-profile', userController.fetchSingleProfile);//Fetch profile of a single user, usually used after login
+router.get('/fetch-single-user-details/:id', userController.fetchSingleUserDetails);//Fetch profile of a single user, used by admin
+
 router.get('/departments', setAccessControl('1'), userController.fetchAllDepartments);
 router.get('/sections', setAccessControl('1'), userController.fetchAllSections);
 router.get('/branches', setAccessControl('1'), userController.fetchAllBranches);
 router.get('/fetch-all-roles', setAccessControl('1'), userController.fetchAllRoles);
-router.get('/fetch-single-user-details', setAccessControl('1'), userController.fetchAllRoles); // For edit or view user profiles by admin (incomplete)
-router.get('/update-single-user-details', setAccessControl('1'), userController.fetchAllRoles); // For updating user profiles by admin(incomplete)
+router.get('/fetch-single-user-roles', setAccessControl('1'), userController.fetchAllRoles); // For edit or view user profiles by admin (incomplete)
+router.put('/update-single-user-details/:id', setAccessControl('1'), userController.updateSingleUserDetails);// For updating user profiles by admin(incomplete)
 
 
 

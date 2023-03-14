@@ -414,7 +414,7 @@ exports.passwordReset = async function (token, old_password, new_password) {
   });
 };
 
-exports.resetForgettedPassword = async function (token, new_password) {
+exports.resetForgettedPassword = async function (token, new_password, confirm_new_password) {
   return new Promise(async (resolve, reject) => {
     try {
       decoded = jwt.decode(token);
@@ -931,3 +931,157 @@ exports.addRoles = async function (
     }
   });
 };
+
+
+exports.fetchSingleUserDetails = async function (token, id) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+
+        const targetUser = await userModel.findOne({where : {id : id}});
+        if(targetUser){
+
+          let branchName = (await branchModel.findOne({where : {id : targetUser.branch_id}})).getDataValue('branch');
+          let sectionName = (await sectionModel.findOne({where : {id : targetUser.section_id}})).getDataValue('section');
+          let departmentName = (await departmentModel.findOne({where : {id : targetUser.department_id}})).getDataValue('department');
+          let roles_ids = (await userRoleConnector.findAll({where : {user_id : targetUser.id}, attributes : ['role_id']}));
+          // let roles= [];
+
+           let roles = await Promise.all(roles_ids.map( async role =>{
+            let user_roles = await userRoles.findAll({where : {id : role.role_id}, attributes : ['role']});
+            let target_user_role = await Promise.all(user_roles.map( async role => {
+
+              console.log("Role : ", role.getDataValue('role'));
+              let user_role = role.getDataValue('role');
+              console.log(" user role : ", user_role);
+              return user_role;
+              // console.log("Roles :", roles);
+            } ));
+            return target_user_role[0];
+            }))
+
+  console.log("Roles : ", roles);
+
+          let profile = {
+            firstName : targetUser.first_name,
+            lastName : targetUser.last_name,
+            email : targetUser.email,
+            image : targetUser.image,
+            phone : targetUser.phone,
+            department : departmentName,
+            section : sectionName,
+            branch : branchName,
+            roles : roles
+          }
+    
+        
+          console.log("Profile data : ", profile);
+          resolve({"status" : 200, "data" : profile, "message" : "User details fetched successfully"});
+        }else {
+          reject({"status" : 404, "message" : "Cannot find this user"});
+        }
+    
+      }else {
+
+        reject({"status" : 404, "message" : "Requested user profile not found"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}
+
+
+exports.updateSingleUserDetails = async function (token, id, role, department, branch, section) {
+
+  return new Promise(async (resolve, reject)=>{
+
+    try {
+
+      console.log("Token : ", token);
+      
+      const decoded = jwt.decode(token);
+      const user = await userModel.findOne({where : {id : decoded.user_id}});
+    
+      if(user){
+
+        const targetUser = await userModel.findOne({where : {id : id}});
+        if(targetUser){
+
+          let branch_id = (await branchModel.findOne({where : {branch : branch}})).getDataValue('id');
+          let section_id = (await sectionModel.findOne({where : {section : section}})).getDataValue('id');
+          let department_id = (await departmentModel.findOne({where : {department : department}})).getDataValue('id');
+          let role_id = (await userRoles.findOne({where : {role : role}, attributes : ['id']})).getDataValue('id');
+          // let roles= [];
+  
+          let profileUpdate = {
+            branch_id : branch_id,
+            section_id : section_id,
+            department_id : department_id,
+          }
+    
+        
+          console.log("Update Profile data : ", profileUpdate);
+
+          let updatedProfile = await targetUser.update(profileUpdate);
+          let roleUpdate = await userRoleConnector.create({user_id : id, role_id : role_id});
+
+          console.log("UpdatedProfile : ", updatedProfile);
+          console.log("RoleUpdate : ", roleUpdate);
+
+          if(updatedProfile && roleUpdate) {
+
+            resolve({"status" : 200, "data" : updatedProfile, "message" : "User details fetched successfully"});
+          }else {
+            reject({"status" : 404, "message" : "Cannot update"});
+
+          }
+        }else {
+          reject({"status" : 404, "message" : "Cannot find this user"});
+        }
+    
+      }else {
+
+        reject({"status" : 404, "message" : "Requested user profile not found"});
+      }
+    } catch (error) {
+
+      reject({
+        status: 400,
+        message: error
+          ? error.message
+            ? error.message
+            : error
+          : "Something went wrong",
+      });
+      
+    }
+
+
+  })
+
+
+
+}

@@ -11,6 +11,7 @@ exports.createNew = function (req, res) {
     const token = authHeader.split(' ')[1];
 
 
+    let job_id = req.body.job_id;
     let print_cover_operator = req.body.print_cover_operator // (Dropdown) (completed) From print_cover_operators table
     let print_cover_color = req.body.print_cover_color // (Dropdown) (completed) From print_cover_colors table
     let print_cover_status = req.body.print_cover_status // (Dropdown) (completed) From print_cover_statuses table
@@ -23,7 +24,7 @@ exports.createNew = function (req, res) {
     let print_cover_material = req.body.print_cover_material; // (Dropdown)
     // let request_date; // Insert date using dayjs
     // let completed_date; // Insert date using dayjs
-    finishingAndBindingManager.createNew(token, job_id, binding_operator, binding_type, binding_status, material, binding_page_count, binding_quantity, require_perforation, binding_material, unit_cost)
+    printCoverManager.createNew(token, job_id, print_cover_operator, print_cover_color, print_cover_status, print_cover_printer, print_cover_paper_type, print_cover_side, require_lamination, print_cover_quantity, print_cover_machine, print_cover_material)
       .then((result) => {
         const response = success_function(result);
         res.status(result.status).send(response);
