@@ -11,10 +11,20 @@ const materials = sequelize.define("materials", {
     primaryKey: true,
   },
 
-  material: {
+   name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
+
+  type : {
+    type : Sequelize.STRING,
+    allowNull : false
+  },
+
+  cost : {
+    type : Sequelize.STRING,
+    allowNull : false
+  }
 
 });
 

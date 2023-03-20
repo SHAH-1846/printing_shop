@@ -14,7 +14,10 @@ const departments = sequelize.define("departments", {
   department: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue : '',
+    // unique : true,
   },
+
 });
 
         departments.sync({ alter : true });

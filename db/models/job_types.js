@@ -13,7 +13,8 @@ const job_types = sequelize.define('job_types', {
 
     job_type : {
         type : Sequelize.STRING,
-        allowNull : false
+        allowNull : false,
+        unique : true,
     }
 });
 

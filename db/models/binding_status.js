@@ -16,6 +16,7 @@ const binding_status = sequelize.define("binding_status", {
   status: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue : ''
   },
 });
 

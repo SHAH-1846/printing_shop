@@ -13,7 +13,8 @@ const job_status = sequelize.define('job_status', {
 
     status : {
         type : Sequelize.STRING,
-        allowNull : false
+        allowNull : false,
+        defaultValue : '',
     }
 });
 

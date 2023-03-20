@@ -12,34 +12,19 @@ id:{
         primaryKey: true
     },
     
-    name : {
+    operator_name : {
         type: Sequelize.STRING,
         allowNull : false,
     },
 
-    type : {
+    operator_type : {
         type : Sequelize.STRING,
-        allowNull : false,
-    },
-
-    purpose : {
-        type : Sequelize.STRING,
-        allowNull : false,
-    },
-
-    description : {
-        type : Sequelize.TEXT,
-        allowNull : false,
-    },
-
-    cost : {
-        type : Sequelize.STRING,
-        allowNull : false,
+        allowNull : false
     }
 
 
 });
 
-//  department.sync({ force: true });
+ operators.sync({ alter: true });
 
 module.exports = operators

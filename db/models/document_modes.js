@@ -13,7 +13,8 @@ const document_modes = sequelize.define('document_modes', {
 
     document_mode : {
         type : Sequelize.STRING,
-        allowNull : false
+        allowNull : false,
+        defaultValue : '',
     }
 });
 

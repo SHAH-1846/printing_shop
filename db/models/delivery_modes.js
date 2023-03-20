@@ -14,6 +14,7 @@ const delivery_modes = sequelize.define("delivery_modes", {
   delivery_mode: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue : '',
   },
 });
 

@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 
 const sequelize = require("../db-conn");
 
-const finishing_and_binding = sequelize.define("finishing_and_binding", {
+const finishing_and_bindings = sequelize.define("finishing_and_bindings", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -18,7 +18,9 @@ const finishing_and_binding = sequelize.define("finishing_and_binding", {
 
   binding_operator_id: {
     //From binding_operators table
-    type: Sequelize.INTEGER,
+        //Convert this to integer format after converting the column value to integer format using raw sql query
+
+    type: Sequelize.STRING,
     allowNull: false,
   },
 
@@ -55,28 +57,32 @@ const finishing_and_binding = sequelize.define("finishing_and_binding", {
     allowNull: false,
   },
 
-  binding_material_id: {
-    // From binding_materials table
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-
-  unit_cost_id: {
-    // From binding_unit_costs table
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-
   request_date: {
+    //When finishing_and binding is requested
+    //Convert this to date format after converting the column value to date format using raw sql query
     type: Sequelize.STRING,
+    // allowNull: false,
+  },
+  
+  completed_date: {
+        //Convert this to date format after converting the column value to date format using raw sql query
+    type: Sequelize.STRING,
+  },
+
+  unit_cost: {
+    // From binding_unit_costs table
+    type: Sequelize.DECIMAL(14,4),
     allowNull: false,
   },
 
-  completed_date: {
-    type: Sequelize.STRING,
-  },
+
 });
 
-finishing_and_binding.sync({ alter: true });
+// sequelize.query("ALTER TABLE finishing_and_bindings MODIFY unit_cost DECIMAL(14, 4);")
+//   .then(() => console.log("Column type changed successfully"))
+//   .catch(err => console.error("Error altering column type: ", err));
 
-module.exports = finishing_and_binding
+
+finishing_and_bindings.sync({alter : true});
+
+module.exports = finishing_and_bindings

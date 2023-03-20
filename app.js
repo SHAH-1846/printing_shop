@@ -28,18 +28,14 @@ const printCoverRoutes = require('./routes/printCoverRoutes');
 
 const printPagesRoutes = require('./routes/printPagesRoutes');
 
-const model = require('./db/models/print_cover');
+const model = require('./db/models/campus');
+// const old_model = require('./db/old_models/dc_jobbinding');
 
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json());
-app.use(cors({
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204
-}));
+app.use(cors());
 
 app.use('/uploads',express.static(__dirname + '/uploads'));
 

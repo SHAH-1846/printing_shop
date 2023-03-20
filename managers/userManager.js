@@ -414,7 +414,7 @@ exports.passwordReset = async function (token, old_password, new_password) {
   });
 };
 
-exports.resetForgettedPassword = async function (token, new_password, confirm_new_password) {
+exports.resetForgettedPassword = async function (token, new_password) {
   return new Promise(async (resolve, reject) => {
     try {
       decoded = jwt.decode(token);

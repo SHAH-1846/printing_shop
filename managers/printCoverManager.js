@@ -1,13 +1,13 @@
 const usersModel = require('../db/models/users');
 const printCoversModel = require('../db/models/print_cover');
-const printCoverOperatorsModel = require('../db/models/print_cover_operator');
+// const printCoverOperatorsModel = require('../db/models/print_cover_operator');
 const printCoverColorsModel = require('../db/models/print_cover_color');
 const printCoverStatusModel = require('../db/models/print_cover_status');
 const printCoverPrintersModel = require('../db/models/print_cover_printer');
 const printCoverPaperTypesModel = require('../db/models/print_cover_paper_type');
 const printCoverSidesModel = require('../db/models/print_cover_sides');
 const printCoverMachinesModel = require('../db/models/print_cover_machine');
-const printCoverMaterialsModel = require('../db/models/print_cover_material');
+// const printCoverMaterialsModel = require('../db/models/print_cover_material');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 

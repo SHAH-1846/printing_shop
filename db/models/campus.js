@@ -2,7 +2,7 @@ const {Sequelize, INTEGER} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const document_types = sequelize.define('document_types', {
+const campus = sequelize.define('campus', {
 
     id : {
         type : Sequelize.INTEGER,
@@ -11,14 +11,15 @@ const document_types = sequelize.define('document_types', {
         autoIncrement : true
     },
 
-    document_type : {
+    campus : {
         type : Sequelize.STRING,
         allowNull : false,
+        unique : true,
         defaultValue : '',
     }
 });
 
 
-document_types.sync({alter : true});
+campus.sync({alter : true});
 
-module.exports = document_types
+module.exports = campus

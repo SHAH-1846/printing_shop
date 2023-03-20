@@ -17,9 +17,9 @@ exports.createJob = function (req, res) {
     
     // let job_status = req.body.job_status;
     // let job_req_date = req.body.job_req_date;
+    let job_title = req.body.job_title;
     let job_type = req.body.job_type; // Dropdown (completed)
     let job_status = req.body.job_status; // Dropdown (completed)
-    let job_title = req.body.job_title;
     let requested_by = req.body.requested_by; // Dropdown (completed) From clients table
     let requested_by_entity = req.body.requested_by_entity; // Dropdown (completed) From entities table
     let requested_by_department = req.body.requested_by_department; // Dropdown (completed) From departments table

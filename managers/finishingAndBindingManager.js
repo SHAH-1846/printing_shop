@@ -1,11 +1,11 @@
 const usersModel = require('../db/models/users');
-const bindingOperatorsModel = require('../db/models/binding_operators');
+// const bindingOperatorsModel = require('../db/models/binding_operators');
 const bindingTypesModel = require('../db/models/binding_types');
 const bindingStatusModel = require('../db/models/binding_status');
-const bindingMaterialsModel = require('../db/models/binding_materials');
+// const bindingMaterialsModel = require('../db/models/binding_materials');
 const MaterialsModel = require('../db/models/materials');
 const bindingUnitCostsModel = require('../db/models/binding_unit_costs');
-const finishingAndBindingModel = require('../db/models/finishing_and_binding');
+const finishingAndBindingModel = require('../db/models/finishing_and_bindings');
 const jwt = require('jsonwebtoken');
 const dayjs = require('dayjs');
 

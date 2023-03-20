@@ -3,7 +3,7 @@ const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const jobs =  sequelize.define("jobs",{
+const job_profile =  sequelize.define("job_profile",{
 
 id:{
         type: Sequelize.INTEGER,
@@ -11,34 +11,48 @@ id:{
         allowNull: false,
         primaryKey: true
     },
+
+    job_id : {
+        //jobID
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        defaultValue : '0',
+    },
     
     job_title : {
+        //jobTitle
         type: Sequelize.STRING,
         allowNull : false,
+        defaultValue : '',
     },
 
     requested_by_id : {
-        //from clients table
+        //jobReqBy
+        //from requestprofile table
         type: Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
 
     requested_by_entity_id : {
         //From entities table
         type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : 0,
     },
 
     requested_by_department_id : {
         //From departments table
         type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : 0,
     },
 
     requested_by_section_id : {
         // From sections table
         type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : 0,
     },
 
     // requested_service_id : {
@@ -48,93 +62,103 @@ id:{
     // },
 
     job_type_id : {
+        //jobType {Replace with id from job_types table}
         //From job_types table
         type : Sequelize.INTEGER,
         allowNull : false,
     },
 
     job_req_comment : {
+        //jobReqComment
         type : Sequelize.TEXT,
         allowNull : false,
+        defaultValue : '',
     },
 
     document_type_id : {
+        //jobDocType {Replace with id}
         //From document_types table
         type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
 
     document_name : {
+        //jobDocName
         type : Sequelize.STRING,
         allowNull : false,
+        defaultValue : '',
     },
 
     
     document_mode_id : {
         //From document_modes table
+        //jobDocMode
         type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
 
     
     requested_delivery_date : {
+        //jobReqDeliveryDate
         type : Sequelize.STRING,
         allowNull : false,
+        defaultValue : sequelize.literal('0'),
     },
-
-
-    job_requested_on : {
-    type : Sequelize.STRING,
-    allowNull : false,
-    },
-
 
     job_status : {
+        //jobStatus
         //Newly created job will go to the pending status and when it is done job_status will be updated with done status
     type : Sequelize.INTEGER,
     allowNull : false,
     },
 
-
-    job_completed_on : {
-    type : Sequelize.STRING,
-    // allowNull : false,
-    },
-
-
     confidentiality : {
-    type : Sequelize.STRING,
+        //jobConfidential
+    type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
     require_sample : {
-    type : Sequelize.STRING,
+        //jobReqSample
+    type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
     require_edits : {
-    type : Sequelize.STRING,
+        //jobReqEdit
+    type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     } ,
 
 
     delivery_mode_id : {
+        //jobDeliveryMode {Replace with id}
         //From delivery_modes table
     type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
     deliver_to_id : {
-        //From clients table
+        //jobDeliverTo
+        //From clients/dc_requestprofile table
     type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
     deliver_to_entity_id : {
+        //jobReqFor 
+        //From dc_requestprofile
     type : Sequelize.INTEGER,
     allowNull : false,
     },
@@ -147,9 +171,11 @@ id:{
 
 
     deliver_to_department_id : {
+        //jobDelDepartment {Replace with id from departments table}
         //from departments table
     type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
@@ -161,37 +187,45 @@ id:{
     },
 
 
-    deliver_to_branch_id : {
-        //from branches table
-    type : Sequelize.INTEGER,
-    // allowNull : false,
+    deliver_to_location : {
+        //jobDelLocation
+    type : Sequelize.STRING,
+    allowNull : false,
+    defaultValue : '',
     },
 
     require_cover : {
-        type : Sequelize.STRING,
+        //jobReqCover
+        type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
 
-    require_finishing : {
-        type : Sequelize.STRING,
+    require_finishing_and_binding : {
+        //jobReqBinding
+        type : Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
 
+    job_requested_on : {
+        //jobReqDate
+    type : Sequelize.STRING,
+    allowNull : false,
+    defaultValue : sequelize.literal('0'),
+    },
 
-    // print_pages : {
-    //     type : Sequelize.STRING,
-    //     // allowNull : false,
-    // }
-
-
-
-
-
+    job_completed_on : {
+        //jobDoneDate
+    type : Sequelize.STRING,
+    allowNull : false,
+    defaultValue : sequelize.literal('0'),
+    },
 
 });
 
- jobs.sync({ alter: true });
+ job_profile.sync({ alter: true });
 
-module.exports = jobs
+module.exports = job_profile
 
 
