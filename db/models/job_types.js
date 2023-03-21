@@ -14,7 +14,7 @@ const job_types = sequelize.define('job_types', {
     job_type : {
         type : Sequelize.STRING,
         allowNull : false,
-        unique : true,
+        // unique : true,
     }
 });
 

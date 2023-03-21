@@ -16,22 +16,22 @@ id:{
         //jobID
         type : Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
     
     job_title : {
         //jobTitle
         type: Sequelize.STRING,
         allowNull : false,
-        defaultValue : '',
+        // defaultValue : '',
     },
 
     requested_by_id : {
-        //jobReqBy
+        //jobReqBy {Replace with id}
         //from requestprofile table
         type: Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
 
     requested_by_entity_id : {
@@ -72,7 +72,7 @@ id:{
         //jobReqComment
         type : Sequelize.TEXT,
         allowNull : false,
-        defaultValue : '',
+        // defaultValue : '',
     },
 
     document_type_id : {
@@ -80,14 +80,14 @@ id:{
         //From document_types table
         type : Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
 
     document_name : {
         //jobDocName
         type : Sequelize.STRING,
         allowNull : false,
-        defaultValue : '',
+        // defaultValue : '',
     },
 
     
@@ -96,7 +96,7 @@ id:{
         //jobDocMode
         type : Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
 
     
@@ -104,37 +104,45 @@ id:{
         //jobReqDeliveryDate
         type : Sequelize.STRING,
         allowNull : false,
-        defaultValue : sequelize.literal('0'),
+        // defaultValue : sequelize.literal('0'),
+    },
+
+    job_req_for : {
+        //jobReqFor
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
     },
 
     job_status : {
         //jobStatus
-        //Newly created job will go to the pending status and when it is done job_status will be updated with done status
+        //From job_statuses table
     type : Sequelize.INTEGER,
     allowNull : false,
+    // defaultValue : '0',
     },
 
     confidentiality : {
-        //jobConfidential
+        //jobConfidential {0,1}
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     },
 
 
     require_sample : {
-        //jobReqSample
+        //jobReqSample {0,1}
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     },
 
 
     require_edits : {
-        //jobReqEdit
+        //jobReqEdit {0,1}
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     } ,
 
 
@@ -143,24 +151,23 @@ id:{
         //From delivery_modes table
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     },
 
 
     deliver_to_id : {
         //jobDeliverTo
-        //From clients/dc_requestprofile table
+        //From dc_requestprofile table
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     },
 
 
-    deliver_to_entity_id : {
-        //jobReqFor 
-        //From dc_requestprofile
+    deliver_to_entity_id : { 
     type : Sequelize.INTEGER,
     allowNull : false,
+    defaultValue : '0',
     },
 
 
@@ -175,7 +182,7 @@ id:{
         //from departments table
     type : Sequelize.INTEGER,
     allowNull : false,
-    defaultValue : '0',
+    // defaultValue : '0',
     },
 
 
@@ -183,7 +190,7 @@ id:{
         //from sections table
     type : Sequelize.INTEGER,
     allowNull : false,
-
+    defaultValue : '0',
     },
 
 
@@ -191,35 +198,35 @@ id:{
         //jobDelLocation
     type : Sequelize.STRING,
     allowNull : false,
-    defaultValue : '',
+    // defaultValue : '',
     },
 
     require_cover : {
-        //jobReqCover
+        //jobReqCover {0,1}
         type : Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
 
     require_finishing_and_binding : {
-        //jobReqBinding
+        //jobReqBinding {0,1}
         type : Sequelize.INTEGER,
         allowNull : false,
-        defaultValue : '0',
+        // defaultValue : '0',
     },
 
     job_requested_on : {
         //jobReqDate
     type : Sequelize.STRING,
     allowNull : false,
-    defaultValue : sequelize.literal('0'),
+    // defaultValue : sequelize.literal('0'),
     },
 
     job_completed_on : {
         //jobDoneDate
     type : Sequelize.STRING,
     allowNull : false,
-    defaultValue : sequelize.literal('0'),
+    // defaultValue : sequelize.literal('0'),
     },
 
 });

@@ -19,14 +19,14 @@ const request_profile = sequelize.define("request_profile", {
     defaultValue : '',
   },
 
-  department : {
+  department_id : {
     //{Replace with id from departments table}
     type : Sequelize.INTEGER,
     allowNull : false,
     defaultValue : '0',
   },
 
-  campus : {
+  campus_id: {
     //{Replace with id from campuses table}
     type : Sequelize.INTEGER,
     allowNull : false,
@@ -36,11 +36,11 @@ const request_profile = sequelize.define("request_profile", {
   email : {
     type : Sequelize.STRING,
     allowNull : false,
-    unique : true,
+    // unique : true,
     defaultValue : '',
   },
 
-  section : {
+  section_id : {
     //{Replace with id from sections table}
     type : Sequelize.INTEGER,
     allowNull : false,
@@ -50,7 +50,7 @@ const request_profile = sequelize.define("request_profile", {
   contact_no : {
     type : Sequelize.STRING,
     allowNull : false,
-    unique : true,
+    // unique : true,
     defaultValue : '',
   },
 
@@ -65,3 +65,5 @@ const request_profile = sequelize.define("request_profile", {
 request_profile.sync({ alter : true });
 
 module.exports = request_profile
+
+

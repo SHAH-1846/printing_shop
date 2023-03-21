@@ -14,7 +14,7 @@ const campus = sequelize.define('campus', {
     campus : {
         type : Sequelize.STRING,
         allowNull : false,
-        unique : true,
+        // unique : true,
         defaultValue : '',
     }
 });
