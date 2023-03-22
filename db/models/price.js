@@ -12,9 +12,50 @@ id:{
         primaryKey: true
     },
 
+    paperType : {
+        //paperType
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    },
+
+    printerType : {
+        //printerType
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    },
+
+    printOnesideBW : {
+        //printOnesideBW
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    },
+
+    printTwosideBW : {
+        //printTwosideBW
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    },
+
+    printOnesideC : {
+        //printOnesideC
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    },
+
+    printTwosideC : {
+        //printTwosideC
+        type : Sequelize.STRING,
+        allowNull : false,
+        defaultValue : '',
+    }
 
 });
 
-//  department.sync({ force: true });
+ price.sync({ force: true });
 
 module.exports = price

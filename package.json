@@ -9,7 +9,9 @@
     "dev": "nodemon app.js",
     "transfer_finishing_and_binding" : "node db/data_transfer/transfer_finishing_and_binding ",
     "transfer_request_profiles" : "node db/data_transfer/transfer_request_profiles",
-    "transfer_job_profiles" : "node db/data_transfer/transfer_job_profiles"
+    "transfer_job_profiles" : "node db/data_transfer/transfer_job_profiles",
+    "transfer_papers_data" : "node db/data_transfer/transfer_papers_data",
+    "transfer_prices_data" : "node db/data_transfer/transfer_price_table"
   },
   "author": "",
   "license": "ISC",

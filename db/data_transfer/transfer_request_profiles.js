@@ -37,7 +37,7 @@ destConnection.connect((err) => {
 // define the SQL query to transfer data from Table1 to Table2
 const sqlQuery = `
 INSERT INTO task_management.request_profiles (id, name, department_id, campus_id, email, section_id, contact_no, user_id, createdAt, updatedAt)
-SELECT t.id, t.name,r1.id,r2.id,t.email,r3.id,t.contactno,t.userid,"2023-03-21","2023-03-21"
+SELECT t.id, t.name,r1.id,r2.id,t.email,r3.id,t.contactno,t.userid,NOW(),NOW()
 FROM printing_shop.dc_requestprofile t
 INNER JOIN task_management.departments r1 ON t.department = r1.department
 INNER JOIN task_management.campuses r2 ON t.campus = r2.campus

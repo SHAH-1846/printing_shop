@@ -16,6 +16,7 @@ const print_cover_colors = sequelize.define("print_cover_colors", {
   print_cover_color: {
     type: Sequelize.STRING,
     allowNull: false,
+    // defaultValue : '',
   },
 });
 

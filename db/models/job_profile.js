@@ -114,7 +114,7 @@ id:{
         // defaultValue : '0',
     },
 
-    job_status : {
+    job_status_id : {
         //jobStatus
         //From job_statuses table
     type : Sequelize.INTEGER,
@@ -157,7 +157,7 @@ id:{
 
     deliver_to_id : {
         //jobDeliverTo
-        //From dc_requestprofile table
+        //From requestprofile table
     type : Sequelize.INTEGER,
     allowNull : false,
     // defaultValue : '0',

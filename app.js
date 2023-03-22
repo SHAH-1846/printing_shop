@@ -28,7 +28,7 @@ const printCoverRoutes = require('./routes/printCoverRoutes');
 
 const printPagesRoutes = require('./routes/printPagesRoutes');
 
-const model = require('./db/models/campus');
+const model = require('./db/models/price');
 // const old_model = require('./db/old_models/dc_jobbinding');
 
 
