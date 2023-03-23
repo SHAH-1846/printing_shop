@@ -1,7 +1,7 @@
 const usersModel = require('../db/models/users');
 const printPagesModel = require('../db/models/print_pages');
 // const job_print_operators_model = require('../db/models/job_print_operator');
-const job_print_colors_model = require('../db/models/job_print_color');
+const job_print_colors_model = require('../db/models/print_pages_colors');
 const print_pages_printers_model = require('../db/models/print_pages_printer');
 const print_pages_paper_types_model = require('../db/models/print_pages_paper_type');
 const print_pages_machines_model = require('../db/models/print_pages_machine');

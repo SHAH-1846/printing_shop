@@ -15,31 +15,36 @@ id:{
     name : {
         type: Sequelize.STRING,
         allowNull : false,
+        // defaultValue : '',
     },
 
-    type : {
+    status : {
         type : Sequelize.STRING,
         allowNull : false,
+        // defaultValue : '',
     },
 
-    purpose : {
+    color_type : {
         type : Sequelize.STRING,
         allowNull : false,
+        // defaultValue : '',
     },
 
-    description : {
-        type : Sequelize.TEXT,
-        allowNull : false,
-    },
 
     cost : {
-        type : Sequelize.STRING,
+        type : Sequelize.DECIMAL(10,4),
         allowNull : false,
-    }
+        // defaultValue : '0.0000',
+    },
 
+    paper_support : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    }
 
 });
 
-//  department.sync({ force: true });
+ printers.sync({ alter: true });
 
 module.exports = printers

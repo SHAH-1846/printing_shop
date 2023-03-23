@@ -11,7 +11,11 @@
     "transfer_request_profiles" : "node db/data_transfer/transfer_request_profiles",
     "transfer_job_profiles" : "node db/data_transfer/transfer_job_profiles",
     "transfer_papers_data" : "node db/data_transfer/transfer_papers_data",
-    "transfer_prices_data" : "node db/data_transfer/transfer_price_table"
+    "transfer_prices_data" : "node db/data_transfer/transfer_price_table",
+    "transfer_print_covers" : "node db/data_transfer/transfer_print_cover",
+    "transfer_printer_papers" : "node db/data_transfer/transfer_printer_papers",
+    "transfer_printers_data" : "node db/data_transfer/transfer_printers_data",
+    "transfer_print_pages" : "node db/data_transfer/transfer_print_pages"
   },
   "author": "",
   "license": "ISC",

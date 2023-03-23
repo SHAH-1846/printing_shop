@@ -21,7 +21,7 @@ const print_cover = sequelize.define("print_cover", {
   print_cover_operator_id: {
     //printCover_operator
     //From operators table
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
     // defaultValue : '0',
   },
@@ -42,7 +42,7 @@ const print_cover = sequelize.define("print_cover", {
 
   print_cover_status_id: {
     //printCover_status
-    // From print_cover_statuses table
+    // Replace with From print_cover_statuses table
     type: Sequelize.INTEGER,
     allowNull: false,
     // defaultValue : '0',
@@ -50,7 +50,7 @@ const print_cover = sequelize.define("print_cover", {
 
   print_cover_material_id: {
     //printCover_material
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
     // defaultValue : '0',
   },

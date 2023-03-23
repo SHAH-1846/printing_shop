@@ -4,7 +4,7 @@ const {Sequelize} = require('sequelize');
 const sequelize = require('../db-conn');
 
 
-const job_print_colors = sequelize.define("job_print_colors", {
+const print_pages_colors = sequelize.define("print_pages_colors", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -15,9 +15,10 @@ const job_print_colors = sequelize.define("job_print_colors", {
   job_print_color: {
     type: Sequelize.STRING,
     allowNull: false,
+    // defaultValue : '',
   },
 });
 
-job_print_colors.sync({ alter : true });
+print_pages_colors.sync({ alter : true });
 
-module.exports = job_print_colors
+module.exports = print_pages_colors

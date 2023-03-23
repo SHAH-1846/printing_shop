@@ -15,31 +15,138 @@ const print_pages =  sequelize.define("print_pages",{
     job_id : {
         //From jobs table sent through req body
         type : Sequelize.INTEGER,
-        allowNull : false
+        allowNull : false,
+        // defaultValue : '0',
     },
 
-    job_print_operator_id : {
-        //From job_print_operators table
-        type: Sequelize.INTEGER,
+    print_pages_machine : {
+        type : Sequelize.INTEGER,
         allowNull : false,
+        // defaultValue : '0',
     },
 
     job_print_color_id : {
-        //From job_print_colors table
+        //Replace with id from print_pages_colors table
+        //From print_pages_colors table
         type : Sequelize.INTEGER,
         allowNull : false
     },
 
-    
+
+    job_print_operator_id : {
+        //From operators table
+        type: Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '',
+    },
+
+    paper_type_id : {
+        //From papers table
+        type: Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+    job_print_pages : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+
+    job_print_quantity : {
+        type: Sequelize.INTEGER,
+        allowNull : false,
+        defaultValue : '0',
+    },
+
+    job_done_date : {
+        type : Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '0000-00-00 00:00:00',
+    },
+
+    job_status : {
+        type : Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '',
+
+    },
+
+    job_req_comment : {
+        type : Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '',
+    },
+
+    job_print_comment : {
+        type : Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '',
+    },
+
     print_sides : {
         //Single or Double
         type: Sequelize.STRING,
         allowNull : false,
+        // defaultValue : '',
+    },
+
+    job_type : {
+        type : Sequelize.STRING,
+        allowNull : false,
+        // defaultValue : '',
+    },
+
+    
+    job_print_total : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+    job_req_paper_quantity : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+    job_print_per_paper : {
+        type : Sequelize.INTEGER,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+    job_req_lamination : {
+        type : Sequelize.BOOLEAN,
+        allowNull : false,
+        // defaultValue : '0',
+
+    },
+
+    job_req_stappled : {
+        type : Sequelize.BOOLEAN,
+        allowNull : false,
+        // defaultValue : '0',
+    },
+
+    job_paper_cost : {
+        type : Sequelize.DECIMAL(10,4),
+        allowNull : false,
+        defaultValue : '0.0000'
+
+    },
+
+    job_print_cost : {
+        type : Sequelize.DECIMAL(10,4),
+        allowNull : false,
+        // defaultValue : '0.0000',
     },
 
     item_pages : {
         type : Sequelize.INTEGER,
-        allowNull : false
+        allowNull : false,
+        defaultValue : '0',
     },
 
     
@@ -47,42 +154,8 @@ const print_pages =  sequelize.define("print_pages",{
         //From print_pages_printer table
         type: Sequelize.INTEGER,
         allowNull : false,
+        defaultValue : '0',
     },
-
-    job_print_quantity : {
-        type: Sequelize.INTEGER,
-        allowNull : false,
-    },
-
-    paper_type_id : {
-        //From print_pages_paper_type table
-        type: Sequelize.STRING,
-        allowNull : false,
-    },
-
-
-    job_req_paper_quantity : {
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-
-    job_print_comment : {
-        type : Sequelize.STRING,
-        allowNull : false
-    },
-
-    print_pages_machine_id : {
-        //From print_pages_machines table
-        type : Sequelize.INTEGER,
-        allowNull : false
-    },
-
-    job_print_total : {
-        type : Sequelize.STRING,
-        allowNull : false
-    }
-
-
 
 });
 
